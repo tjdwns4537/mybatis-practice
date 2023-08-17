@@ -12,6 +12,4 @@
     <select id="saveUser" resultType="kia.com.mybatistest.model.dto.UserDto">
         INSERT INTO users(user_name, user_email, user_password, create_at, modify_at) VALUES ( #{user_name}, #{user_email}, #{user_password}, #{create_at}, #{modify_at});
     </select>
-
-
 </mapper>
