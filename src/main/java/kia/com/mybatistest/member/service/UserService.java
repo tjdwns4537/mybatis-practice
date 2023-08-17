@@ -1,18 +1,30 @@
 package kia.com.mybatistest.member.service;
 
+import kia.com.mybatistest.model.dao.UserMapper;
+import kia.com.mybatistest.model.dto.UserDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
-public class UserService {
-    public void join() {
+@RequiredArgsConstructor
+public class UserService implements UserServiceInterface {
 
+    private final UserMapper userMapper;
+
+    @Override
+    public void saveUser(UserDto userDto) {
+        userMapper.saveUser(userDto);
     }
 
-    public void findById() {
-
+    @Override
+    public List<UserDto> getAllUserDataList() {
+        return userMapper.getAllUserDataList();
     }
 
-    public void findAll() {
-
+    @Override
+    public UserDto findById(Long id) {
+        return null;
     }
 }
