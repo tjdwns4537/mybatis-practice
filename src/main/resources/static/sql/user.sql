@@ -9,3 +9,11 @@ CREATE TABLE user(
                      modified_At TIMESTAMP,
                      PRIMARY KEY(user_id)
 )
+
+/** INSERT user **/
+
+INSERT INTO users(
+    user_name, user_email, user_password, create_at, modified_at
+    ) VALUES (
+    'test','test@com','test123','2023-08-10','2023-08-10'
+    );
