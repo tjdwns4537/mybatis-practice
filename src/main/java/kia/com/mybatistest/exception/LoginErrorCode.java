@@ -1,20 +1,27 @@
 package kia.com.mybatistest.exception;
 
-public enum LoginErrorCode {
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 
-    NotAuthroized(6000, "not authorized"),
-    DuplicateIdFound(6001, "Duplicate Id"),
-    unrecognizedRole(6010, "unrecognized Role");
+public enum LoginErrorCode {
+    DataIntegrityViolationException(400, HttpStatus.BAD_REQUEST,"you should input data");
+
     private int code;
+    private HttpStatus httpStatus;
     private String description;
 
-    private LoginErrorCode(int code, String description) {
+    private LoginErrorCode(int code, HttpStatus httpStatus, String description) {
         this.code = code;
+        this.httpStatus = httpStatus;
         this.description = description;
     }
 
     public int getCode() {
         return code;
+    }
+
+    public HttpStatus getHttpStatus() {
+        return httpStatus;
     }
 
     public String getDescription() {
