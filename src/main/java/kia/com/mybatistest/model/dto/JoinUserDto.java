@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class UserDto {
+public class JoinUserDto {
     private Long user_id;
     private String user_name;
     private String user_email;
@@ -20,11 +20,11 @@ public class UserDto {
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime modify_at;
 
-    public UserDto() {
+    public JoinUserDto() {
 
     }
 
-    public UserDto(String user_name, String user_email, String user_password, LocalDateTime create_at, LocalDateTime modify_at) {
+    public JoinUserDto(String user_name, String user_email, String user_password, LocalDateTime create_at, LocalDateTime modify_at) {
         this.user_name = user_name;
         this.user_email = user_email;
         this.user_password = user_password;
@@ -32,7 +32,7 @@ public class UserDto {
         this.modify_at = modify_at;
     }
 
-    public static UserDto of(String user_name, String user_email, String user_password, LocalDateTime create_at, LocalDateTime modify_at) {
-        return new UserDto(user_name, user_email, user_password, create_at, modify_at);
+    public static JoinUserDto of(String user_name, String user_email, String user_password, LocalDateTime create_at, LocalDateTime modify_at) {
+        return new JoinUserDto(user_name, user_email, user_password, create_at, modify_at);
     }
 }

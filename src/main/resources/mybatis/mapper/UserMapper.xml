@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kia.com.mybatistest.model.dao.UserMapper">
-    <select id="getAllUserDataList" resultType="kia.com.mybatistest.model.dto.UserDto">
+    <select id="getAllUserDataList" resultType="kia.com.mybatistest.model.dto.JoinUserDto">
         SELECT * FROM users
     </select>
 
-    <select id="findById" resultType="kia.com.mybatistest.model.dto.UserDto">
+    <select id="findById" resultType="kia.com.mybatistest.model.dto.JoinUserDto">
         SELECT * FROM users WHERE user_id=#{user_id}
     </select>
 
-    <select id="saveUser" resultType="kia.com.mybatistest.model.dto.UserDto">
+    <select id="findByIdAndPassword" resultType="kia.com.mybatistest.model.dto.JoinUserDto">
+        SELECT * FROM users WHERE user_email=#{userEmail} AND user_password=#{userPassword}
+    </select>
+
+    <select id="saveUser" resultType="kia.com.mybatistest.model.dto.JoinUserDto">
         INSERT INTO users(user_name, user_email, user_password, create_at, modify_at) VALUES ( #{user_name}, #{user_email}, #{user_password}, #{create_at}, #{modify_at});
     </select>
 </mapper>
