@@ -4,6 +4,7 @@ import kia.com.mybatistest.model.dto.JoinUserDto;
 import kia.com.mybatistest.model.dto.LoginUserDto;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserServiceInterface {
 
@@ -11,6 +12,6 @@ public interface UserServiceInterface {
     List<JoinUserDto> getAllUserDataList();
 
     JoinUserDto findById(Long id);
-    JoinUserDto findByIdAndPassword(LoginUserDto loginUserDto);
+    Optional<JoinUserDto> findByIdAndPassword(LoginUserDto loginUserDto);
 
 }

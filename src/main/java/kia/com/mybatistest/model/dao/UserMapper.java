@@ -13,6 +13,5 @@ public interface UserMapper {
     List<JoinUserDto> getAllUserDataList();
     void saveUser(JoinUserDto joinUserDto);
     JoinUserDto findById(Long id);
-
     JoinUserDto findByIdAndPassword(LoginUserDto loginUserDto);
 }

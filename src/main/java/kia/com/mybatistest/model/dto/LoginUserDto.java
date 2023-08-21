@@ -12,8 +12,4 @@ import lombok.Setter;
 public class LoginUserDto {
     private String userEmail;
     private String userPassword;
-
-    public static LoginUserDto of(String userEmail, String userPassword) {
-        return new LoginUserDto(userEmail, userPassword);
-    }
 }
