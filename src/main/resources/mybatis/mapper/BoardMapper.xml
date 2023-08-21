@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kia.com.mybatistest.model.dao.BoardMapper">
+    <select id="findByAll" resultType="kia.com.mybatistest.model.dto.BoardDto">
+        SELECT * FROM boards
+    </select>
+
+    <select id="findById" resultType="kia.com.mybatistest.model.dto.BoardDto">
+        SELECT * FROM boards WHERE board_id=#{board_id}
+    </select>
+
+    <select id="saveBoard" resultType="kia.com.mybatistest.model.dto.BoardDto">
+        INSERT INTO boards(board_title, board_content, create_at, modify_at)
+        VALUES ( #{board_title}, #{board_content}, #{create_at},  #{modify_at});
+    </select>
+</mapper>
