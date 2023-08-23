@@ -1,4 +1,4 @@
-package kia.com.mybatistest.exception;
+package kia.com.mybatistest.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,8 +10,9 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class LoginResponse {
+public class UserResponse {
     private int code;
     private HttpStatus httpStatus;
     private String message;
+    private Object data;
 }
