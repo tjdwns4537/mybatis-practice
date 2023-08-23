@@ -1,19 +1,16 @@
 package kia.com.mybatistest.member.controller;
 
-import kia.com.mybatistest.exception.LoginResponse;
-import kia.com.mybatistest.exception.LoginResponseCode;
+import kia.com.mybatistest.response.UserResponse;
+import kia.com.mybatistest.response.UserResponseCode;
 import kia.com.mybatistest.member.service.UserService;
 import kia.com.mybatistest.model.dto.JoinUserDto;
 import kia.com.mybatistest.model.dto.LoginUserDto;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,10 +22,19 @@ public class MemberTestController {
     private final UserService userService;
 
     @GetMapping("/user/test/{id}")
-    public JoinUserDto findId(
+    public ResponseEntity<UserResponse> findId(
             @PathVariable Long id
     ) {
-        return userService.findById(id);
+        JoinUserDto result = userService.findById(id);
+
+        UserResponse userResponse = UserResponse.builder()
+                .code(UserResponseCode.OK.getCode())
+                .message(UserResponseCode.OK.getDescription())
+                .httpStatus(UserResponseCode.OK.getHttpStatus())
+                .data(result)
+                .build();
+
+        return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }
 
     @PostMapping("/user/test/saveData")
@@ -45,7 +51,7 @@ public class MemberTestController {
     }
 
     @GetMapping("/user/test/login")
-    public ResponseEntity<LoginResponse> loginUser(
+    public ResponseEntity<UserResponse> loginUser(
             @RequestBody LoginUserDto loginUserDto
             ) {
 
@@ -56,20 +62,20 @@ public class MemberTestController {
         if(user.isPresent()){
             log.info("출력 데이터 : {}, {}", user.get().getUserEmail(), user.get().getUserPassword());
 
-            LoginResponse loginResponse = LoginResponse.builder()
-                    .code(LoginResponseCode.OK.getCode())
-                    .httpStatus(LoginResponseCode.OK.getHttpStatus())
-                    .message(LoginResponseCode.OK.getDescription()).build();
+            UserResponse userResponse = UserResponse.builder()
+                    .code(UserResponseCode.OK.getCode())
+                    .httpStatus(UserResponseCode.OK.getHttpStatus())
+                    .message(UserResponseCode.OK.getDescription()).build();
 
-            return new ResponseEntity<>(loginResponse, HttpStatus.OK);
+            return new ResponseEntity<>(userResponse, HttpStatus.OK);
         } else{
             log.info("출력 데이터 : {}, {}", user.get().getUserId(), user.get().getUserPassword());
-            LoginResponse loginResponse = LoginResponse.builder()
-                    .code(LoginResponseCode.LoginFail.getCode())
-                    .httpStatus(LoginResponseCode.LoginFail.getHttpStatus())
-                    .message(LoginResponseCode.LoginFail.getDescription()).build();
+            UserResponse userResponse = UserResponse.builder()
+                    .code(UserResponseCode.LoginFail.getCode())
+                    .httpStatus(UserResponseCode.LoginFail.getHttpStatus())
+                    .message(UserResponseCode.LoginFail.getDescription()).build();
 
-            return new ResponseEntity<>(loginResponse, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(userResponse, HttpStatus.BAD_REQUEST);
         }
     }
 }
