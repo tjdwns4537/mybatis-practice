@@ -1,29 +1,19 @@
-package kia.com.mybatistest.member.controller;
+package kia.com.mybatistest.user.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import kia.com.mybatistest.member.service.UserService;
-import kia.com.mybatistest.response.UserResponse;
-import kia.com.mybatistest.response.UserResponseCode;
+import kia.com.mybatistest.user.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.time.LocalDateTime;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(MemberTestController.class)
-class MemberTestControllerTest {
+@WebMvcTest(UserController.class)
+class User {
 
     @MockBean
     private UserService userService;
