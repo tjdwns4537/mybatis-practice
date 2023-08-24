@@ -1,11 +1,11 @@
-package kia.com.mybatistest.member.controller;
+package kia.com.mybatistest.user.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
-public class MemberController {
+public class UserThymeLeafController {
 
     @GetMapping("/login")
     public String login() {

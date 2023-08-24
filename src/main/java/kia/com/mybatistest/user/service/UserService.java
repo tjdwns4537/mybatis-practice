@@ -1,4 +1,4 @@
-package kia.com.mybatistest.member.service;
+package kia.com.mybatistest.user.service;
 
 import kia.com.mybatistest.model.dao.UserMapper;
 import kia.com.mybatistest.model.dto.JoinUserDto;

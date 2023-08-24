@@ -1,8 +1,13 @@
-package kia.com.mybatistest.member.controller;
+package kia.com.mybatistest.user.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import kia.com.mybatistest.response.UserResponse;
 import kia.com.mybatistest.response.UserResponseCode;
-import kia.com.mybatistest.member.service.UserService;
+import kia.com.mybatistest.user.service.UserService;
 import kia.com.mybatistest.model.dto.JoinUserDto;
 import kia.com.mybatistest.model.dto.LoginUserDto;
 import lombok.RequiredArgsConstructor;
@@ -17,10 +22,12 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RestController
 @Slf4j
-public class MemberTestController {
+public class UserController {
 
     private final UserService userService;
 
+    @Operation(summary = "회원 키ID 조회", description = "회원 정보 조회", tags = {"UserController"})
+    @ApiOperation(value = "Get User by userId")
     @GetMapping("/user/test/{id}")
     public ResponseEntity<UserResponse> findId(
             @PathVariable Long id
@@ -37,6 +44,8 @@ public class MemberTestController {
         return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }
 
+    @Operation(summary = "회원 객체를 통해 저장",description = "회원 저장", tags = {"UserController"})
+    @ApiOperation(value = "Save User")
     @PostMapping("/user/test/saveData")
     public HttpStatus saveUserData(
         @RequestBody JoinUserDto joinUserDto
@@ -45,11 +54,15 @@ public class MemberTestController {
         return HttpStatus.OK;
     }
 
+    @Operation(summary = "회원 정보 전체 조회", description = "회원 정보 전체 조회", tags = {"UserController"})
+    @ApiOperation(value = "Find All User")
     @GetMapping("/user/test/allData")
     public List<JoinUserDto> getAllDataList() {
         return userService.getAllUserDataList();
     }
 
+    @Operation(summary = "로그인", description = "회원 로그인", tags = {"UserController"})
+    @ApiOperation(value = "Login User")
     @GetMapping("/user/test/login")
     public ResponseEntity<UserResponse> loginUser(
             @RequestBody LoginUserDto loginUserDto
