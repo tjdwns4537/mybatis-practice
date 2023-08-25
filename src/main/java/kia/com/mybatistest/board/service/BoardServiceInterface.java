@@ -9,5 +9,5 @@ public interface BoardServiceInterface {
 
     BoardDto findById(Long id);
 
-    void saveBoard(BoardDto boardDto);
+    void addBoard(BoardDto boardDto);
 }

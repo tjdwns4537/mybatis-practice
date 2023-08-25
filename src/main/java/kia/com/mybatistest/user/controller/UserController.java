@@ -26,7 +26,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @Operation(summary = "회원 키ID 조회", description = "회원 정보 조회", tags = {"UserController"})
+    @Operation(summary = "회원 키ID 조회", description = "Id정보를 통한 회원 정보 조회", tags = {"UserController"})
     @ApiOperation(value = "Get User by userId")
     @GetMapping("/user/test/{id}")
     public ResponseEntity<UserResponse> findId(
@@ -54,14 +54,14 @@ public class UserController {
         return HttpStatus.OK;
     }
 
-    @Operation(summary = "회원 정보 전체 조회", description = "회원 정보 전체 조회", tags = {"UserController"})
+    @Operation(summary = "회원 정보 전체 조회", description = "회원 정보 전체 리스트", tags = {"UserController"})
     @ApiOperation(value = "Find All User")
     @GetMapping("/user/test/allData")
     public List<JoinUserDto> getAllDataList() {
         return userService.getAllUserDataList();
     }
 
-    @Operation(summary = "로그인", description = "회원 로그인", tags = {"UserController"})
+    @Operation(summary = "로그인", description = "회원 로그인 성공/실패 여부 확인", tags = {"UserController"})
     @ApiOperation(value = "Login User")
     @GetMapping("/user/test/login")
     public ResponseEntity<UserResponse> loginUser(
