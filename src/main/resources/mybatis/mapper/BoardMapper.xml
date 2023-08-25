@@ -16,4 +16,8 @@
         INSERT INTO boards(board_title, board_content, create_at, modify_at)
         VALUES ( #{board_title}, #{board_content}, #{create_at},  #{modify_at});
     </select>
+
+    <select id="deleteAll" resultType="kia.com.mybatistest.model.dto.BoardDto">
+        TRUNCATE TABLE boards;
+    </select>
 </mapper>
