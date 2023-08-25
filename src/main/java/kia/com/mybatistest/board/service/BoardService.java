@@ -24,7 +24,7 @@ public class BoardService implements BoardServiceInterface{
     }
 
     @Override
-    public void saveBoard(BoardDto boardDto) {
+    public void addBoard(BoardDto boardDto) {
         boardMapper.saveBoard(boardDto);
     }
 }
