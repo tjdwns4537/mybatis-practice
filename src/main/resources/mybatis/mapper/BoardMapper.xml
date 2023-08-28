@@ -17,7 +17,7 @@
         <result property="boardContent" column="board_content"/>
         <result property="createAt" column="create_at"/>
         <result property="modifyAt" column="modify_at"/>
-        <association property="user" column="user" resultMap="userResultMap"/>
+        <association property="user" column="userId" javaType="kia.com.mybatistest.model.dto.JoinUserDto" resultMap="userResultMap"/>
     </resultMap>
 
     <!-- JoinUserDto를 위한 resultMap도 선언 -->
@@ -29,6 +29,14 @@
         <result property="createAt" column="create_at"/>
         <result property="modifyAt" column="modify_at"/>
     </resultMap>
+
+    <select id="findByBoardUserAll" resultMap="boardUserResultMap">
+        SELECT b.board_id, b.board_title, b.board_content, b.create_at AS boardCreateAt, b.modify_at AS boardModifyAt,
+               u.user_id, u.user_name, u.user_email, u.user_password, u.create_at AS userCreateAt, u.modify_at AS userModifyAt
+        FROM boards b
+                 JOIN users u
+                      ON b.user_id = u.user_id
+    </select>
 
     <select id="findByAll" resultMap="boardResultMap">
         SELECT b.board_id, b.board_title, b.board_content, b.create_at AS boardCreateAt, b.modify_at AS boardModifyAt,
@@ -44,7 +52,7 @@
 
     <select id="saveBoard" resultMap="boardResultMap">
         INSERT INTO boards(board_title, board_content, create_at, modify_at, user_id)
-        VALUES ( #{boardTitle}, #{boardContent}, #{createAt},  #{modifyAt}, #{userId});
+        VALUES (#{boardTitle}, #{boardContent}, #{createAt},  #{modifyAt}, #{userId});
     </select>
 
     <select id="saveBoard2" resultMap="boardResultMap">

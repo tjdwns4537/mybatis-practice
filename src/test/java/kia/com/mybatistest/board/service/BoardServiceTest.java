@@ -1,6 +1,7 @@
 package kia.com.mybatistest.board.service;
 
 import kia.com.mybatistest.model.dto.BoardDto;
+import kia.com.mybatistest.model.dto.BoardUserDto;
 import kia.com.mybatistest.model.dto.JoinUserDto;
 import kia.com.mybatistest.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +36,7 @@ class BoardServiceTest {
     }
 
     @Test
-    void findByAll() {
+    void findByBoardAll() {
         for(BoardDto i : boardService.findByAll()){
             JoinUserDto user = userService.findById(i.getUserId());
 
@@ -44,6 +45,19 @@ class BoardServiceTest {
             log.info("userName: {}",user.getUserName());
             log.info("userEmail: {}",user.getUserEmail());
             log.info("userPassword: {}",user.getUserPassword());
+        }
+    }
+
+    @Test
+    void findByBoardUserAll() {
+        for (BoardUserDto i : boardService.findByBoardUserAll()) {
+            log.info("--------------------------");
+            log.info("title: {}",i.getBoardTitle());
+            log.info("content: {}",i.getBoardContent());
+            log.info("userName: {}",i.getUser().getUserName());
+            log.info("userEmail: {}",i.getUser().getUserEmail());
+            log.info("userPassword: {}",i.getUser().getUserPassword());
+            log.info("--------------------------");
         }
     }
 

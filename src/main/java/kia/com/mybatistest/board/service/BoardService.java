@@ -2,6 +2,7 @@ package kia.com.mybatistest.board.service;
 
 import kia.com.mybatistest.model.dao.BoardMapper;
 import kia.com.mybatistest.model.dto.BoardDto;
+import kia.com.mybatistest.model.dto.BoardUserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,9 @@ public class BoardService implements BoardServiceInterface{
     public List<BoardDto> findByAll() {
         return boardMapper.findByAll();
     }
+
+    @Override
+    public List<BoardUserDto> findByBoardUserAll() { return boardMapper.findByBoardUserAll(); }
 
     @Override
     public BoardDto findById(Long id) {
