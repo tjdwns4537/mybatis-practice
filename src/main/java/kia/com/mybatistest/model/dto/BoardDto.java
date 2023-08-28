@@ -1,6 +1,7 @@
 package kia.com.mybatistest.model.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -8,22 +9,28 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class BoardDto {
 
-    private Long board_id;
-    private String board_title;
-    private String board_content;
+    private Long boardId;
+    private String boardTitle;
+    private String boardContent;
+    private String createAt;
+    private String modifyAt;
+    private Long userId;
 
-//    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private String create_at;
+    public BoardDto(String boardTitle, String boardContent, String createAt, String modifyAt) {
+        this.boardTitle = boardTitle;
+        this.boardContent = boardContent;
+        this.createAt = createAt;
+        this.modifyAt = modifyAt;
+    }
 
-//    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private String modify_at;
-
-    public BoardDto(String board_title, String board_content, String create_at, String modify_at) {
-        this.board_title = board_title;
-        this.board_content = board_content;
-        this.create_at = create_at;
-        this.modify_at = modify_at;
+    public BoardDto(String boardTitle, String boardContent, String createAt, String modifyAt, Long userId) {
+        this.boardTitle = boardTitle;
+        this.boardContent = boardContent;
+        this.createAt = createAt;
+        this.modifyAt = modifyAt;
+        this.userId = userId;
     }
 }

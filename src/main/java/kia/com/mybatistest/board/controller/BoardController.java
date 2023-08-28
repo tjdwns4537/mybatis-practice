@@ -23,7 +23,7 @@ public class BoardController {
     @ApiOperation(value = "Save Board")
     @PostMapping("/board/test/saveBoard")
     public HttpStatus boardSave(@RequestBody BoardDto boardDto) {
-        boardService.addBoard(boardDto);
+        boardService.saveBoard(boardDto);
         return HttpStatus.OK;
     }
 

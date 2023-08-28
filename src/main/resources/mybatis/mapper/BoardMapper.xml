@@ -2,22 +2,57 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kia.com.mybatistest.model.dao.BoardMapper">
 
+    <resultMap id="boardResultMap" type="kia.com.mybatistest.model.dto.BoardDto">
+        <result property="boardId" column="board_id"/>
+        <result property="boardTitle" column="board_title"/>
+        <result property="boardContent" column="board_content"/>
+        <result property="createAt" column="create_at"/>
+        <result property="modifyAt" column="modify_at"/>
+        <result property="userId" column="user_id"/>
+    </resultMap>
 
+    <resultMap id="boardUserResultMap" type="kia.com.mybatistest.model.dto.BoardUserDto">
+        <result property="boardId" column="board_id"/>
+        <result property="boardTitle" column="board_title"/>
+        <result property="boardContent" column="board_content"/>
+        <result property="createAt" column="create_at"/>
+        <result property="modifyAt" column="modify_at"/>
+        <association property="user" column="user" resultMap="userResultMap"/>
+    </resultMap>
 
-    <select id="findByAll" resultType="kia.com.mybatistest.model.dto.BoardDto">
-        SELECT * FROM boards
+    <!-- JoinUserDto를 위한 resultMap도 선언 -->
+    <resultMap id="userResultMap" type="kia.com.mybatistest.model.dto.JoinUserDto">
+        <result property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="userEmail" column="user_email"/>
+        <result property="userPassword" column="user_password"/>
+        <result property="createAt" column="create_at"/>
+        <result property="modifyAt" column="modify_at"/>
+    </resultMap>
+
+    <select id="findByAll" resultMap="boardResultMap">
+        SELECT b.board_id, b.board_title, b.board_content, b.create_at AS boardCreateAt, b.modify_at AS boardModifyAt,
+            u.user_id, u.user_name, u.user_password, u.create_at AS userCreateAt, u.modify_at AS userModifyAt
+        FROM boards b
+            JOIN users u
+                ON b.user_id = u.user_id
     </select>
 
-    <select id="findById" resultType="kia.com.mybatistest.model.dto.BoardDto">
+    <select id="findById" resultMap="boardResultMap">
         SELECT * FROM boards WHERE board_id=#{board_id}
     </select>
 
-    <select id="saveBoard" resultType="kia.com.mybatistest.model.dto.BoardDto">
-        INSERT INTO boards(board_title, board_content, create_at, modify_at)
-        VALUES ( #{board_title}, #{board_content}, #{create_at},  #{modify_at});
+    <select id="saveBoard" resultMap="boardResultMap">
+        INSERT INTO boards(board_title, board_content, create_at, modify_at, user_id)
+        VALUES ( #{boardTitle}, #{boardContent}, #{createAt},  #{modifyAt}, #{userId});
     </select>
 
-    <select id="deleteAll" resultType="kia.com.mybatistest.model.dto.BoardDto">
+    <select id="saveBoard2" resultMap="boardResultMap">
+        INSERT INTO boards(board_title, board_content, create_at, modify_at, user_id)
+        VALUES ( #{boardTitle}, #{boardContent}, #{createAt},  #{modifyAt}, #{userId});
+    </select>
+
+    <select id="deleteAll" resultMap="boardResultMap">
         TRUNCATE TABLE boards;
     </select>
 </mapper>
