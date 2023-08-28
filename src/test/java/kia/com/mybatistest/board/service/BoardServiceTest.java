@@ -74,12 +74,12 @@ class BoardServiceTest {
         JoinUserDto user1 = userService.findById(1L);
         JoinUserDto user2 = userService.findById(2L);
 
-        BoardDto boardDto1 = new BoardDto("testBoard1","testContent1", String.valueOf(LocalDateTime.now()), String.valueOf(LocalDateTime.now()), user1.getUserId());
-        BoardDto boardDto2 = new BoardDto("testBoard2","testContent2", String.valueOf(LocalDateTime.now()), String.valueOf(LocalDateTime.now()), user2.getUserId());
-        BoardDto boardDto3 = new BoardDto("testBoard3","testContent3", String.valueOf(LocalDateTime.now()),String.valueOf(LocalDateTime.now()),user1.getUserId());
+        BoardDto boardDto1 = new BoardDto("testBoard1","testContent1", String.valueOf(LocalDateTime.now()), String.valueOf(LocalDateTime.now()));
+        BoardDto boardDto2 = new BoardDto("testBoard2","testContent2", String.valueOf(LocalDateTime.now()), String.valueOf(LocalDateTime.now()));
+        BoardDto boardDto3 = new BoardDto("testBoard3","testContent3", String.valueOf(LocalDateTime.now()),String.valueOf(LocalDateTime.now()));
 
-        boardService.saveBoard(boardDto1);
-        boardService.saveBoard(boardDto2);
-        boardService.saveBoard(boardDto3);
+        boardService.saveBoard(boardDto1, user1.getUserId());
+        boardService.saveBoard(boardDto2, user2.getUserId());
+        boardService.saveBoard(boardDto3, user1.getUserId());
     }
 }

@@ -10,9 +10,9 @@ import java.util.List;
 @Repository
 @Mapper
 public interface BoardMapper {
-    List<BoardDto> findByAll();
+    List<BoardDto> findByAll(); // userId 만 조회
 
-    List<BoardUserDto> findByBoardUserAll();
+    List<BoardUserDto> findByBoardUserAll(); // board 내부에서 user 인스턴스 자체를 조회할 수 있음
 
     BoardDto findById(Long id);
 

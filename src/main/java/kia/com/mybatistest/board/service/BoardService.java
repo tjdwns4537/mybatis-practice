@@ -3,6 +3,8 @@ package kia.com.mybatistest.board.service;
 import kia.com.mybatistest.model.dao.BoardMapper;
 import kia.com.mybatistest.model.dto.BoardDto;
 import kia.com.mybatistest.model.dto.BoardUserDto;
+import kia.com.mybatistest.model.dto.JoinUserDto;
+import kia.com.mybatistest.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +30,8 @@ public class BoardService implements BoardServiceInterface{
     }
 
     @Override
-    public void saveBoard(BoardDto boardDto) {
+    public void saveBoard(BoardDto boardDto, Long userId) {
+        boardDto.setUserId(userId);
         boardMapper.saveBoard(boardDto);
     }
 

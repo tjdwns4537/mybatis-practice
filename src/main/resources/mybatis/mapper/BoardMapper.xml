@@ -31,8 +31,8 @@
     </resultMap>
 
     <select id="findByBoardUserAll" resultMap="boardUserResultMap">
-        SELECT b.board_id, b.board_title, b.board_content, b.create_at AS boardCreateAt, b.modify_at AS boardModifyAt,
-               u.user_id, u.user_name, u.user_email, u.user_password, u.create_at AS userCreateAt, u.modify_at AS userModifyAt
+        SELECT b.board_id, b.board_title, b.board_content, b.create_at, b.modify_at,
+               u.user_id, u.user_name, u.user_email, u.user_password, u.create_at, u.modify_at
         FROM boards b
                  JOIN users u
                       ON b.user_id = u.user_id
@@ -40,7 +40,7 @@
 
     <select id="findByAll" resultMap="boardResultMap">
         SELECT b.board_id, b.board_title, b.board_content, b.create_at AS boardCreateAt, b.modify_at AS boardModifyAt,
-            u.user_id, u.user_name, u.user_password, u.create_at AS userCreateAt, u.modify_at AS userModifyAt
+            u.user_id, u.user_name, u.user_email, u.user_password, u.create_at AS userCreateAt, u.modify_at AS userModifyAt
         FROM boards b
             JOIN users u
                 ON b.user_id = u.user_id
@@ -53,11 +53,6 @@
     <select id="saveBoard" resultMap="boardResultMap">
         INSERT INTO boards(board_title, board_content, create_at, modify_at, user_id)
         VALUES (#{boardTitle}, #{boardContent}, #{createAt},  #{modifyAt}, #{userId});
-    </select>
-
-    <select id="saveBoard2" resultMap="boardResultMap">
-        INSERT INTO boards(board_title, board_content, create_at, modify_at, user_id)
-        VALUES ( #{boardTitle}, #{boardContent}, #{createAt},  #{modifyAt}, #{userId});
     </select>
 
     <select id="deleteAll" resultMap="boardResultMap">
