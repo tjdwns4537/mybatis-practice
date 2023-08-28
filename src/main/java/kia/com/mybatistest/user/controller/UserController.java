@@ -47,11 +47,19 @@ public class UserController {
     @Operation(summary = "회원 객체를 통해 저장",description = "회원 저장", tags = {"UserController"})
     @ApiOperation(value = "Save User")
     @PostMapping("/user/test/saveData")
-    public HttpStatus saveUserData(
+    public ResponseEntity<UserResponse> saveUserData(
         @RequestBody JoinUserDto joinUserDto
     ) {
-        userService.saveUser(joinUserDto);
-        return HttpStatus.OK;
+        JoinUserDto result = userService.saveUser(joinUserDto);
+
+        UserResponse userResponse = UserResponse.builder()
+                .code(UserResponseCode.OK.getCode())
+                .message(UserResponseCode.OK.getDescription())
+                .httpStatus(UserResponseCode.OK.getHttpStatus())
+                .data(result)
+                .build();
+
+        return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }
 
     @Operation(summary = "회원 정보 전체 조회", description = "회원 정보 전체 리스트", tags = {"UserController"})

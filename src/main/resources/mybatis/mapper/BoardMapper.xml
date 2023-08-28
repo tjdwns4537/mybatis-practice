@@ -11,15 +11,6 @@
         <result property="userId" column="user_id"/>
     </resultMap>
 
-    <resultMap id="boardUserResultMap" type="kia.com.mybatistest.model.dto.BoardUserDto">
-        <result property="boardId" column="board_id"/>
-        <result property="boardTitle" column="board_title"/>
-        <result property="boardContent" column="board_content"/>
-        <result property="createAt" column="create_at"/>
-        <result property="modifyAt" column="modify_at"/>
-        <association property="user" column="userId" javaType="kia.com.mybatistest.model.dto.JoinUserDto" resultMap="userResultMap"/>
-    </resultMap>
-
     <!-- JoinUserDto를 위한 resultMap도 선언 -->
     <resultMap id="userResultMap" type="kia.com.mybatistest.model.dto.JoinUserDto">
         <result property="userId" column="user_id"/>
@@ -28,6 +19,11 @@
         <result property="userPassword" column="user_password"/>
         <result property="createAt" column="create_at"/>
         <result property="modifyAt" column="modify_at"/>
+    </resultMap>
+
+    <resultMap id="boardUserResultMap" type="kia.com.mybatistest.model.dto.BoardUserDto">
+        <association property="board" column="boardId" javaType="kia.com.mybatistest.model.dto.BoardDto" resultMap="boardResultMap"/>
+        <association property="user" column="userId" javaType="kia.com.mybatistest.model.dto.JoinUserDto" resultMap="userResultMap"/>
     </resultMap>
 
     <select id="findByBoardUserAll" resultMap="boardUserResultMap">

@@ -10,11 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BoardUserDto {
-    private Long boardId;
-    private String boardTitle;
-    private String boardContent;
-    private String createAt;
-    private String modifyAt;
+    private BoardDto board;
     private JoinUserDto user;
 
 }

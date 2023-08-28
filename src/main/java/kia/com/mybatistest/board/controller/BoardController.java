@@ -26,9 +26,15 @@ public class BoardController {
     @Operation(summary = "게시판 추가", description = "게시판 추가", tags = {"BoardController"})
     @ApiOperation(value = "Save Board")
     @PostMapping("/board/test/saveBoard")
-    public HttpStatus boardSave(@RequestBody BoardDto boardDto, @RequestBody Long userId) {
-        boardService.saveBoard(boardDto, userId);
-        return HttpStatus.OK;
+    public ResponseEntity<BoardResponse> boardSave(@RequestBody BoardDto boardDto) {
+        BoardDto result = boardService.saveBoard(boardDto);
+        BoardResponse boardResponse = BoardResponse.builder()
+                .code(BoardResponseCode.OK.getCode())
+                .httpStatus(BoardResponseCode.OK.getHttpStatus())
+                .message(BoardResponseCode.OK.getDescription())
+                .data(result).build();
+
+        return new ResponseEntity<>(boardResponse, HttpStatus.OK);
     }
 
     @Operation(summary = "게시판 전체 조회", description = "게시판 전체 리스트", tags = {"BoardController"})

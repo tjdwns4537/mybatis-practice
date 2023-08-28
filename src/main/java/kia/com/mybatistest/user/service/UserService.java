@@ -18,8 +18,8 @@ public class UserService implements UserServiceInterface {
     private final UserMapper userMapper;
 
     @Override
-    public void saveUser(JoinUserDto joinUserDto) {
-        userMapper.saveUser(joinUserDto);
+    public JoinUserDto saveUser(JoinUserDto joinUserDto) {
+        return userMapper.saveUser(joinUserDto);
     }
 
     @Override

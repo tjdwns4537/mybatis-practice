@@ -12,7 +12,7 @@ public interface BoardServiceInterface {
 
     BoardDto findById(Long id);
 
-    void saveBoard(BoardDto boardDto, Long userId);
+    BoardDto saveBoard(BoardDto boardDto);
 
     void deleteAll();
 }

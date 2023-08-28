@@ -6,10 +6,12 @@ import kia.com.mybatistest.model.dto.BoardUserDto;
 import kia.com.mybatistest.model.dto.JoinUserDto;
 import kia.com.mybatistest.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BoardService implements BoardServiceInterface{
@@ -30,9 +32,9 @@ public class BoardService implements BoardServiceInterface{
     }
 
     @Override
-    public void saveBoard(BoardDto boardDto, Long userId) {
-        boardDto.setUserId(userId);
+    public BoardDto saveBoard(BoardDto boardDto) {
         boardMapper.saveBoard(boardDto);
+        return boardDto;
     }
 
     @Override

@@ -16,7 +16,7 @@ public interface BoardMapper {
 
     BoardDto findById(Long id);
 
-    void saveBoard(BoardDto boardDto);
+    BoardDto saveBoard(BoardDto boardDto);
 
     void deleteAll();
 }
