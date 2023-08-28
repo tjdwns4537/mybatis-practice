@@ -15,4 +15,5 @@ public interface BoardMapper {
 
     void saveBoard(BoardDto boardDto);
 
+    void deleteAll();
 }
