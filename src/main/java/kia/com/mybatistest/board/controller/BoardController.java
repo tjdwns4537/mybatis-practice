@@ -25,7 +25,7 @@ public class BoardController {
 
     @Operation(summary = "게시판 추가", description = "게시판 추가", tags = {"BoardController"})
     @ApiOperation(value = "Save Board")
-    @PostMapping("/board/test/saveBoard")
+    @PostMapping("/board/registration")
     public ResponseEntity<BoardResponse> boardSave(@RequestBody BoardDto boardDto) {
         BoardDto result = boardService.saveBoard(boardDto);
         BoardResponse boardResponse = BoardResponse.builder()
@@ -39,7 +39,7 @@ public class BoardController {
 
     @Operation(summary = "게시판 전체 조회", description = "게시판 전체 리스트", tags = {"BoardController"})
     @ApiOperation(value = "Get All Board List")
-    @GetMapping("/board/test/findByAll")
+    @GetMapping("/board/total")
     public ResponseEntity<BoardResponse> findByBoardUserAll() {
 
         List<BoardUserDto> data = boardService.findByBoardUserAll();
