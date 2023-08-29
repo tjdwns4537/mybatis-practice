@@ -1,22 +1,21 @@
 package kia.com.mybatistest.response;
 
-import kia.com.mybatistest.model.dto.JoinUserDto;
+import kia.com.mybatistest.model.dto.BoardUserDto;
 import org.springframework.http.HttpStatus;
 
-public enum UserResponseCode {
+public enum BoardResponseCode {
 
-    OK(200, HttpStatus.OK, "ok",new JoinUserDto()),
-    DataIntegrityViolationException(400, HttpStatus.BAD_REQUEST,"필수 입력 데이터를 다 입력해야 합니다.",new JoinUserDto()),
-    LoginFail(400, HttpStatus.BAD_REQUEST,"로그인이 잘못되었습니다.",new JoinUserDto());
+    OK(200,HttpStatus.OK, "ok",new BoardUserDto()),
+    DataIntegrityViolationException(400, HttpStatus.BAD_REQUEST,"필수 입력 데이터를 다 입력해야 합니다.",new BoardUserDto());
     private int code;
     private HttpStatus httpStatus;
     private String description;
     private Object data;
 
-    UserResponseCode(int code,
-                             HttpStatus httpStatus,
-                             String description,
-                             Object data) {
+    BoardResponseCode(int code,
+                     HttpStatus httpStatus,
+                     String description,
+                     Object data) {
         this.code = code;
         this.httpStatus = httpStatus;
         this.description = description;

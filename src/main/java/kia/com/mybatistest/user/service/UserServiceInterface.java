@@ -8,9 +8,8 @@ import java.util.Optional;
 
 public interface UserServiceInterface {
 
-    void saveUser(JoinUserDto joinUserDto);
+    JoinUserDto saveUser(JoinUserDto joinUserDto);
     List<JoinUserDto> getAllUserDataList();
-
     JoinUserDto findById(Long id);
     Optional<JoinUserDto> findByIdAndPassword(LoginUserDto loginUserDto);
 

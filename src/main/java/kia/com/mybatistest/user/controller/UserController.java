@@ -28,7 +28,7 @@ public class UserController {
 
     @Operation(summary = "회원 키ID 조회", description = "Id정보를 통한 회원 정보 조회", tags = {"UserController"})
     @ApiOperation(value = "Get User by userId")
-    @GetMapping("/user/test/{id}")
+    @GetMapping("/user/{id}")
     public ResponseEntity<UserResponse> findId(
             @PathVariable Long id
     ) {
@@ -46,24 +46,32 @@ public class UserController {
 
     @Operation(summary = "회원 객체를 통해 저장",description = "회원 저장", tags = {"UserController"})
     @ApiOperation(value = "Save User")
-    @PostMapping("/user/test/saveData")
-    public HttpStatus saveUserData(
+    @PostMapping("/user/registration")
+    public ResponseEntity<UserResponse> saveUserData(
         @RequestBody JoinUserDto joinUserDto
     ) {
-        userService.saveUser(joinUserDto);
-        return HttpStatus.OK;
+        JoinUserDto result = userService.saveUser(joinUserDto);
+
+        UserResponse userResponse = UserResponse.builder()
+                .code(UserResponseCode.OK.getCode())
+                .message(UserResponseCode.OK.getDescription())
+                .httpStatus(UserResponseCode.OK.getHttpStatus())
+                .data(result)
+                .build();
+
+        return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }
 
     @Operation(summary = "회원 정보 전체 조회", description = "회원 정보 전체 리스트", tags = {"UserController"})
     @ApiOperation(value = "Find All User")
-    @GetMapping("/user/test/allData")
+    @GetMapping("/user/total")
     public List<JoinUserDto> getAllDataList() {
         return userService.getAllUserDataList();
     }
 
     @Operation(summary = "로그인", description = "회원 로그인 성공/실패 여부 확인", tags = {"UserController"})
     @ApiOperation(value = "Login User")
-    @GetMapping("/user/test/login")
+    @GetMapping("/user/login")
     public ResponseEntity<UserResponse> loginUser(
             @RequestBody LoginUserDto loginUserDto
             ) {

@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
     List<JoinUserDto> getAllUserDataList();
-    void saveUser(JoinUserDto joinUserDto);
+    JoinUserDto saveUser(JoinUserDto joinUserDto);
     JoinUserDto findById(Long id);
     JoinUserDto findByIdAndPassword(LoginUserDto loginUserDto);
 }

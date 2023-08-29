@@ -1,6 +1,7 @@
 package kia.com.mybatistest.board.service;
 
 import kia.com.mybatistest.model.dto.BoardDto;
+import kia.com.mybatistest.model.dto.BoardUserDto;
 import kia.com.mybatistest.model.dto.JoinUserDto;
 import kia.com.mybatistest.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +36,7 @@ class BoardServiceTest {
     }
 
     @Test
-    void findByAll() {
+    void findByBoardAll() {
         for(BoardDto i : boardService.findByAll()){
             JoinUserDto user = userService.findById(i.getUserId());
 
@@ -62,7 +63,7 @@ class BoardServiceTest {
 
         BoardDto boardDto1 = new BoardDto("testBoard1","testContent1", String.valueOf(LocalDateTime.now()), String.valueOf(LocalDateTime.now()), user1.getUserId());
         BoardDto boardDto2 = new BoardDto("testBoard2","testContent2", String.valueOf(LocalDateTime.now()), String.valueOf(LocalDateTime.now()), user2.getUserId());
-        BoardDto boardDto3 = new BoardDto("testBoard3","testContent3", String.valueOf(LocalDateTime.now()),String.valueOf(LocalDateTime.now()),user1.getUserId());
+        BoardDto boardDto3 = new BoardDto("testBoard3","testContent3", String.valueOf(LocalDateTime.now()),String.valueOf(LocalDateTime.now()), user1.getUserId());
 
         boardService.saveBoard(boardDto1);
         boardService.saveBoard(boardDto2);
