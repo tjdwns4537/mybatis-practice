@@ -32,14 +32,14 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         // 1. 토큰이 필요하지 않은 API URL에 대해서 배열로 구성합니다.
-        List<String> list = Arrays.asList(
+        List<String> notAuthorizationList = Arrays.asList(
                 "/user/login",
-                "/test/generateToken"
-//                "api/v1/code/codeList"
+                "/test/generateToken",
+                "/test/dataByToken"
         );
 
         // 2. 토큰이 필요하지 않은 API URL의 경우 => 로직 처리 없이 다음 필터로 이동
-        if (list.contains(request.getRequestURI())) {
+        if (notAuthorizationList.contains(request.getRequestURI())) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -62,11 +62,11 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 if (tokenUtils.isValidToken(token)) {
 
                     // [STEP4] 토큰을 기반으로 사용자 아이디를 반환 받는 메서드
-                    String userId = tokenUtils.getUserIdFromToken(token);
-                    logger.debug("[+] userId Check: " + userId);
+                    String userEmail = tokenUtils.getUserEmailFromToken(token);
+                    logger.debug("[+] user-email check: " + userEmail);
 
                     // [STEP5] 사용자 아이디가 존재하는지 여부 체크
-                    if (userId != null && !userId.equalsIgnoreCase("")) {
+                    if (userEmail != null && !userEmail.equalsIgnoreCase("")) {
                         filterChain.doFilter(request, response);
                     } else {
 

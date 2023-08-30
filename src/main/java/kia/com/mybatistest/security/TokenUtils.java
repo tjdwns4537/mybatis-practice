@@ -1,8 +1,10 @@
 package kia.com.mybatistest.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;
 import kia.com.mybatistest.model.dto.LoginUserDto;
 import lombok.extern.log4j.Log4j2;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -43,7 +45,7 @@ public class TokenUtils {
         JwtBuilder builder = Jwts.builder()
                 .setHeader(createHeader())                              // Header 구성
                 .setClaims(createClaims(userDto))                       // Payload - Claims 구성
-                .setSubject(String.valueOf(userDto.getUserSq()))        // Payload - Subject 구성
+                .setSubject(String.valueOf(userDto.getLoginSq()))        // Payload - Subject 구성
                 .signWith(SignatureAlgorithm.HS256, createSignature())  // Signature 구성
                 .setExpiration(createExpiredDate());                    // Expired Date 구성
         return builder.compact();
@@ -74,8 +76,8 @@ public class TokenUtils {
             Claims claims = getClaimsFormToken(token);
 
             log.info("expireTime :" + claims.getExpiration());
-            log.info("userId :" + claims.get("userId"));
-            log.info("userNm :" + claims.get("userNm"));
+            log.info("userEmail :" + claims.get("userEmail"));
+            log.info("userName :" + claims.get("userName"));
 
             return true;
         } catch (ExpiredJwtException exception) {
@@ -137,17 +139,20 @@ public class TokenUtils {
         // 공개 클레임에 사용자의 이름과 이메일을 설정하여 정보를 조회할 수 있다.
         Map<String, Object> claims = new HashMap<>();
 
-        log.info("userId :" + userDto.getUserId());
-        log.info("userNm :" + userDto.getUserName());
+        log.info("userName :" + userDto.getUserName());
+        log.info("userEmail :" + userDto.getUserEmail());
 
-        claims.put("userId", userDto.getUserId());
-        claims.put("userNm", userDto.getUserName());
+        claims.put("userName", userDto.getUserName());
+        claims.put("userEmail", userDto.getUserEmail());
+
         return claims;
     }
 
     /**
      * JWT "서명(Signature)" 발급을 해주는 메서드
      *
+     * Header, Payload의 데이터 무결성, 변조 방지를 위한 서명
+     * Header + Payload를 합친 후 Secret키와 Header의 해싱 알고리즘으로 인코딩
      * @return Key
      */
     private Key createSignature() {
@@ -162,6 +167,7 @@ public class TokenUtils {
      * @return Claims : Claims
      */
     private Claims getClaimsFormToken(String token) {
+        token = token.split(" ")[1];
         return Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(jwtSecretKey))
                 .parseClaimsJws(token).getBody();
     }
@@ -172,8 +178,8 @@ public class TokenUtils {
      * @param token : 토큰
      * @return String : 사용자 아이디
      */
-    public String getUserIdFromToken(String token) {
+    public String getUserEmailFromToken(String token) {
         Claims claims = getClaimsFormToken(token);
-        return claims.get("userId").toString();
+        return claims.get("userEmail").toString();
     }
 }
