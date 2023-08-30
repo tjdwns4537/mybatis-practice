@@ -1,0 +1,55 @@
+package kia.com.mybatistest.security.controller;
+
+import io.jsonwebtoken.security.WeakKeyException;
+import kia.com.mybatistest.model.dto.JoinUserDto;
+import kia.com.mybatistest.model.dto.LoginUserDto;
+import kia.com.mybatistest.response.TokenResponse;
+import kia.com.mybatistest.response.TokenResponseCode;
+import kia.com.mybatistest.security.TokenUtils;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@Slf4j
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/test")
+public class JwtTestController {
+
+    private final TokenUtils tokenUtils;
+
+    @PostMapping("/generateToken")
+    public ResponseEntity<TokenResponse> generateToken(@RequestBody LoginUserDto loginUserDto) {
+        try {
+            String resultToken = tokenUtils.generateJwtToken(loginUserDto);
+            if (resultToken.isEmpty()) {
+                TokenResponse tokenResponse = TokenResponse.builder()
+                        .code(TokenResponseCode.NOT_FOUND.getCode())
+                        .status(TokenResponseCode.NOT_FOUND.getHttpStatus())
+                        .message(TokenResponseCode.NOT_FOUND.getMessage())
+                        .data(resultToken).build();
+                return new ResponseEntity<>(tokenResponse, HttpStatus.NOT_FOUND);
+            }
+
+            TokenResponse tokenResponse = TokenResponse.builder()
+                    .code(TokenResponseCode.OK.getCode())
+                    .status(TokenResponseCode.OK.getHttpStatus())
+                    .message(TokenResponseCode.OK.getMessage())
+                    .data(resultToken).build();
+
+            return new ResponseEntity<>(tokenResponse, HttpStatus.OK);
+        } catch (WeakKeyException e) {
+            TokenResponse tokenResponse = TokenResponse.builder()
+                    .code(TokenResponseCode.INTERNAL_SERVER_ERROR.getCode())
+                    .status(TokenResponseCode.INTERNAL_SERVER_ERROR.getHttpStatus())
+                    .message(TokenResponseCode.INTERNAL_SERVER_ERROR.getMessage())
+                    .data(e.getMessage()).build();
+            return new ResponseEntity<>(tokenResponse, HttpStatus.NOT_FOUND);
+        }
+    }
+}

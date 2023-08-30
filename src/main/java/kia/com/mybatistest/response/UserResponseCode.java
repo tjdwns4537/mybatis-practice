@@ -10,16 +10,16 @@ public enum UserResponseCode {
     LoginFail(400, HttpStatus.BAD_REQUEST,"로그인이 잘못되었습니다.",new JoinUserDto());
     private int code;
     private HttpStatus httpStatus;
-    private String description;
+    private String message;
     private Object data;
 
     UserResponseCode(int code,
                              HttpStatus httpStatus,
-                             String description,
+                             String message,
                              Object data) {
         this.code = code;
         this.httpStatus = httpStatus;
-        this.description = description;
+        this.message = message;
         this.data = data;
     }
 
@@ -31,8 +31,8 @@ public enum UserResponseCode {
         return httpStatus;
     }
 
-    public String getDescription() {
-        return description;
+    public String getMessage() {
+        return message;
     }
 
     public Object getData() {return data;}

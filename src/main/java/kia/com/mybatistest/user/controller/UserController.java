@@ -1,10 +1,7 @@
 package kia.com.mybatistest.user.controller;
 
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import kia.com.mybatistest.response.UserResponse;
 import kia.com.mybatistest.response.UserResponseCode;
 import kia.com.mybatistest.user.service.UserService;
@@ -22,13 +19,14 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RestController
 @Slf4j
+@RequestMapping("/user")
 public class UserController {
 
     private final UserService userService;
 
     @Operation(summary = "회원 키ID 조회", description = "Id정보를 통한 회원 정보 조회", tags = {"UserController"})
     @ApiOperation(value = "Get User by userId")
-    @GetMapping("/user/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<UserResponse> findId(
             @PathVariable Long id
     ) {
@@ -36,7 +34,7 @@ public class UserController {
 
         UserResponse userResponse = UserResponse.builder()
                 .code(UserResponseCode.OK.getCode())
-                .message(UserResponseCode.OK.getDescription())
+                .message(UserResponseCode.OK.getMessage())
                 .httpStatus(UserResponseCode.OK.getHttpStatus())
                 .data(result)
                 .build();
@@ -46,7 +44,7 @@ public class UserController {
 
     @Operation(summary = "회원 객체를 통해 저장",description = "회원 저장", tags = {"UserController"})
     @ApiOperation(value = "Save User")
-    @PostMapping("/user/registration")
+    @PostMapping("/registration")
     public ResponseEntity<UserResponse> saveUserData(
         @RequestBody JoinUserDto joinUserDto
     ) {
@@ -54,7 +52,7 @@ public class UserController {
 
         UserResponse userResponse = UserResponse.builder()
                 .code(UserResponseCode.OK.getCode())
-                .message(UserResponseCode.OK.getDescription())
+                .message(UserResponseCode.OK.getMessage())
                 .httpStatus(UserResponseCode.OK.getHttpStatus())
                 .data(result)
                 .build();
@@ -64,14 +62,14 @@ public class UserController {
 
     @Operation(summary = "회원 정보 전체 조회", description = "회원 정보 전체 리스트", tags = {"UserController"})
     @ApiOperation(value = "Find All User")
-    @GetMapping("/user/total")
+    @GetMapping("/total")
     public List<JoinUserDto> getAllDataList() {
         return userService.getAllUserDataList();
     }
 
     @Operation(summary = "로그인", description = "회원 로그인 성공/실패 여부 확인", tags = {"UserController"})
     @ApiOperation(value = "Login User")
-    @GetMapping("/user/login")
+    @GetMapping("/login")
     public ResponseEntity<UserResponse> loginUser(
             @RequestBody LoginUserDto loginUserDto
             ) {
@@ -86,7 +84,7 @@ public class UserController {
             UserResponse userResponse = UserResponse.builder()
                     .code(UserResponseCode.OK.getCode())
                     .httpStatus(UserResponseCode.OK.getHttpStatus())
-                    .message(UserResponseCode.OK.getDescription()).build();
+                    .message(UserResponseCode.OK.getMessage()).build();
 
             return new ResponseEntity<>(userResponse, HttpStatus.OK);
         } else{
@@ -94,7 +92,7 @@ public class UserController {
             UserResponse userResponse = UserResponse.builder()
                     .code(UserResponseCode.LoginFail.getCode())
                     .httpStatus(UserResponseCode.LoginFail.getHttpStatus())
-                    .message(UserResponseCode.LoginFail.getDescription()).build();
+                    .message(UserResponseCode.LoginFail.getMessage()).build();
 
             return new ResponseEntity<>(userResponse, HttpStatus.BAD_REQUEST);
         }
