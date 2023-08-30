@@ -9,16 +9,16 @@ public enum BoardResponseCode {
     DataIntegrityViolationException(400, HttpStatus.BAD_REQUEST,"필수 입력 데이터를 다 입력해야 합니다.",new BoardUserDto());
     private int code;
     private HttpStatus httpStatus;
-    private String description;
+    private String message;
     private Object data;
 
     BoardResponseCode(int code,
                      HttpStatus httpStatus,
-                     String description,
+                     String message,
                      Object data) {
         this.code = code;
         this.httpStatus = httpStatus;
-        this.description = description;
+        this.message = message;
         this.data = data;
     }
 
@@ -30,8 +30,8 @@ public enum BoardResponseCode {
         return httpStatus;
     }
 
-    public String getDescription() {
-        return description;
+    public String getMessage() {
+        return message;
     }
 
     public Object getData() {return data;}

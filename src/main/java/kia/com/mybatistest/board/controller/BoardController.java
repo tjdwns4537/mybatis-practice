@@ -31,7 +31,7 @@ public class BoardController {
         BoardResponse boardResponse = BoardResponse.builder()
                 .code(BoardResponseCode.OK.getCode())
                 .httpStatus(BoardResponseCode.OK.getHttpStatus())
-                .message(BoardResponseCode.OK.getDescription())
+                .message(BoardResponseCode.OK.getMessage())
                 .data(result).build();
 
         return new ResponseEntity<>(boardResponse, HttpStatus.OK);
@@ -46,7 +46,7 @@ public class BoardController {
         BoardResponse responseEntity = BoardResponse.builder()
                 .code(BoardResponseCode.OK.getCode())
                 .httpStatus(BoardResponseCode.OK.getHttpStatus())
-                .message(BoardResponseCode.OK.getDescription())
+                .message(BoardResponseCode.OK.getMessage())
                 .data(data).build();
 
         return new ResponseEntity<>(responseEntity, HttpStatus.OK);
