@@ -1,6 +1,7 @@
 package kia.com.mybatistest.security;
 
 import io.jsonwebtoken.*;
+import jakarta.servlet.http.Cookie;
 import kia.com.mybatistest.model.dto.LoginUserDto;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,10 +10,7 @@ import org.springframework.stereotype.Component;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * JWT 관련된 토큰 Util

@@ -4,6 +4,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kia.com.mybatistest.security.AuthConstants;
@@ -31,9 +32,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        // 1. 토큰이 필요하지 않은 API URL에 대해서 배열로 구성합니다.
+        // 1. 토큰이 필요하지 않은 API URL에 대해서 배열로 구성합니다. ( admin, test )
         List<String> notAuthorizationList = Arrays.asList(
-                "/user/login",
                 "/test/generateToken",
                 "/test/dataByToken"
         );
@@ -50,7 +50,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             return;
         }
 
-        String header = request.getHeader(AuthConstants.AUTH_HEADER);
+        String atk = Arrays.stream(request.getCookies())
+                .filter(c -> c.getName().equals("Authorization"))
+                .findFirst().map(Cookie::getValue)
+                .orElse(null);
+
+        String header = request.getHeader(AuthConstants.AUTH_HEADER); // Authorization Bearer ~~
         log.debug("header check: {}",header);
 
         try {
