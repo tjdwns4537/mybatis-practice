@@ -45,7 +45,7 @@ public class TokenUtils {
         JwtBuilder builder = Jwts.builder()
                 .setHeader(createHeader())                              // Header 구성
                 .setClaims(createClaims(userDto))                       // Payload - Claims 구성
-                .setSubject(String.valueOf(userDto.getLoginSq()))        // Payload - Subject 구성
+                .setSubject(String.valueOf(userDto.getUserEmail()))        // Payload - Subject 구성
                 .signWith(SignatureAlgorithm.HS256, createSignature())  // Signature 구성
                 .setExpiration(createExpiredDate());                    // Expired Date 구성
         return builder.compact();
