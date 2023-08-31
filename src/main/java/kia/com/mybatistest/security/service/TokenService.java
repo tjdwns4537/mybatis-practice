@@ -1,7 +1,6 @@
-package kia.com.mybatistest.security;
+package kia.com.mybatistest.security.service;
 
 import io.jsonwebtoken.*;
-import jakarta.servlet.http.Cookie;
 import kia.com.mybatistest.model.dto.LoginUserDto;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,7 +20,7 @@ import java.util.*;
  */
 @Log4j2
 @Component
-public class TokenUtils {
+public class TokenService {
 
     private String jwtSecretKey;
 

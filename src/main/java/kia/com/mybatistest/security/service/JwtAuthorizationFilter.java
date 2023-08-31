@@ -1,4 +1,4 @@
-package kia.com.mybatistest.security.jwt;
+package kia.com.mybatistest.security.service;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
@@ -7,8 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import kia.com.mybatistest.security.AuthConstants;
-import kia.com.mybatistest.security.TokenUtils;
+import kia.com.mybatistest.util.AuthConstants;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
@@ -27,7 +26,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
-    private final TokenUtils tokenUtils;
+    private final TokenService tokenService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -51,7 +50,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         }
 
         String atk = Arrays.stream(request.getCookies())
-                .filter(c -> c.getName().equals("Authorization"))
+                .filter(c -> c.getName().equals(AuthConstants.AUTH_COOKIE))
                 .findFirst().map(Cookie::getValue)
                 .orElse(null);
 
@@ -61,13 +60,13 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         try {
             if (header != null && !header.equalsIgnoreCase("")) { // header 내에 토큰이 존재하는 경우
 
-                String token = tokenUtils.getTokenFromHeader(header); // 토큰 기반 사용자 아이디 반환 받는 메소드
+                String token = tokenService.getTokenFromHeader(header); // 토큰 기반 사용자 아이디 반환 받는 메소드
 
                 // [STEP3] 추출한 토큰이 유효한지 여부를 체크합니다.
-                if (tokenUtils.isValidToken(token)) {
+                if (tokenService.isValidToken(token)) {
 
                     // [STEP4] 토큰을 기반으로 사용자 아이디를 반환 받는 메서드
-                    String userEmail = tokenUtils.getUserEmailFromToken(token);
+                    String userEmail = tokenService.getUserEmailFromToken(token);
                     logger.debug("[+] user-email check: " + userEmail);
 
                     // [STEP5] 사용자 아이디가 존재하는지 여부 체크

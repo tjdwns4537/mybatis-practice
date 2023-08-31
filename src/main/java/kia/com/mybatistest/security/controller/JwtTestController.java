@@ -1,11 +1,14 @@
 package kia.com.mybatistest.security.controller;
 
 import io.jsonwebtoken.security.WeakKeyException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import kia.com.mybatistest.model.dto.LoginUserDto;
 import kia.com.mybatistest.response.TokenResponse;
 import kia.com.mybatistest.response.TokenResponseCode;
-import kia.com.mybatistest.security.TokenUtils;
+import kia.com.mybatistest.security.service.CookieService;
+import kia.com.mybatistest.security.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -18,13 +21,20 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/test")
 public class JwtTestController {
 
-    private final TokenUtils tokenUtils;
+    private final TokenService tokenService;
+    private final CookieService cookieService;
 
     @PostMapping("/generateToken")
-    public ResponseEntity<TokenResponse> generateToken(@RequestBody LoginUserDto loginUserDto) {
+    public ResponseEntity<TokenResponse> generateToken(HttpServletResponse httpServletResponse, @RequestBody LoginUserDto loginUserDto) {
         try {
-            String atk = tokenUtils.generateJwtAccessToken(loginUserDto);
-            String rtk = tokenUtils.generateJwtAccessToken(loginUserDto);
+            String atk = tokenService.generateJwtAccessToken(loginUserDto);
+            String rtk = tokenService.generateJwtAccessToken(loginUserDto);
+
+            log.info("토큰 발급: ATK {}, RTK {}", atk, rtk);
+
+            Cookie cookie = cookieService.generateCookie(atk); // cookie 설정
+            httpServletResponse.addCookie(cookie);
+
             if (atk.isEmpty()) {
                 TokenResponse tokenResponse = TokenResponse.builder()
                         .code(TokenResponseCode.NOT_FOUND.getCode())
@@ -54,7 +64,7 @@ public class JwtTestController {
     @GetMapping("/dataByToken")
     public ResponseEntity<TokenResponse> showTokenData(HttpServletRequest req) {
         String authorization = req.getHeader("Authorization");
-        String userEmail = tokenUtils.getUserEmailFromToken(authorization);
+        String userEmail = tokenService.getUserEmailFromToken(authorization);
 
         TokenResponse tokenResponse = TokenResponse.builder()
                 .code(TokenResponseCode.OK.getCode())
