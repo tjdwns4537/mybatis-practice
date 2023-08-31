@@ -1,10 +1,8 @@
 package kia.com.mybatistest.security;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;
 import kia.com.mybatistest.model.dto.LoginUserDto;
 import lombok.extern.log4j.Log4j2;
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -40,14 +38,25 @@ public class TokenUtils {
      * @param userDto LoginUserDto : 사용자 정보
      * @return String : 토큰
      */
-    public String generateJwtToken(LoginUserDto userDto) {
+    public String generateJwtAccessToken(LoginUserDto userDto) {
         // 사용자 시퀀스를 기준으로 JWT 토큰을 발급하여 반환해줍니다.
         JwtBuilder builder = Jwts.builder()
                 .setHeader(createHeader())                              // Header 구성
                 .setClaims(createClaims(userDto))                       // Payload - Claims 구성
                 .setSubject(String.valueOf(userDto.getUserEmail()))        // Payload - Subject 구성
                 .signWith(SignatureAlgorithm.HS256, createSignature())  // Signature 구성
-                .setExpiration(createExpiredDate());                    // Expired Date 구성
+                .setExpiration(createATKExpiredDate());                    // Expired Date 구성
+        return builder.compact();
+    }
+
+    public String generateJwtRefreshToken(LoginUserDto userDto) {
+        // 사용자 시퀀스를 기준으로 JWT 토큰을 발급하여 반환해줍니다.
+        JwtBuilder builder = Jwts.builder()
+                .setHeader(createHeader())                              // Header 구성
+                .setClaims(createClaims(userDto))                       // Payload - Claims 구성
+                .setSubject(String.valueOf(userDto.getUserEmail()))        // Payload - Subject 구성
+                .signWith(SignatureAlgorithm.HS256, createSignature())  // Signature 구성
+                .setExpiration(createATKExpiredDate());                    // Expired Date 구성
         return builder.compact();
     }
 
@@ -107,11 +116,17 @@ public class TokenUtils {
      *
      * @return Calendar
      */
-    private Date createExpiredDate() {
+    private Date createATKExpiredDate() {
         // 토큰 만료시간은 30일으로 설정
         Calendar c = Calendar.getInstance();
         c.add(Calendar.HOUR, 8);     // 8시간
-        // c.add(Calendar.DATE, 1);         // 1일
+        return c.getTime();
+    }
+
+    private Date createRTKExpiredDate() {
+        // 토큰 만료시간은 30일으로 설정
+        Calendar c = Calendar.getInstance();
+         c.add(Calendar.DATE, 14);         // 1일
         return c.getTime();
     }
 

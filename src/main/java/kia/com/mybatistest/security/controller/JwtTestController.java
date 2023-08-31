@@ -2,7 +2,6 @@ package kia.com.mybatistest.security.controller;
 
 import io.jsonwebtoken.security.WeakKeyException;
 import jakarta.servlet.http.HttpServletRequest;
-import kia.com.mybatistest.model.dto.JoinUserDto;
 import kia.com.mybatistest.model.dto.LoginUserDto;
 import kia.com.mybatistest.response.TokenResponse;
 import kia.com.mybatistest.response.TokenResponseCode;
@@ -24,13 +23,14 @@ public class JwtTestController {
     @PostMapping("/generateToken")
     public ResponseEntity<TokenResponse> generateToken(@RequestBody LoginUserDto loginUserDto) {
         try {
-            String resultToken = tokenUtils.generateJwtToken(loginUserDto);
-            if (resultToken.isEmpty()) {
+            String atk = tokenUtils.generateJwtAccessToken(loginUserDto);
+            String rtk = tokenUtils.generateJwtAccessToken(loginUserDto);
+            if (atk.isEmpty()) {
                 TokenResponse tokenResponse = TokenResponse.builder()
                         .code(TokenResponseCode.NOT_FOUND.getCode())
                         .status(TokenResponseCode.NOT_FOUND.getHttpStatus())
                         .message(TokenResponseCode.NOT_FOUND.getMessage())
-                        .data(resultToken).build();
+                        .data(atk).build();
                 return new ResponseEntity<>(tokenResponse, HttpStatus.NOT_FOUND);
             }
 
@@ -38,7 +38,7 @@ public class JwtTestController {
                     .code(TokenResponseCode.OK.getCode())
                     .status(TokenResponseCode.OK.getHttpStatus())
                     .message(TokenResponseCode.OK.getMessage())
-                    .data(resultToken).build();
+                    .data(atk).build();
 
             return new ResponseEntity<>(tokenResponse, HttpStatus.OK);
         } catch (WeakKeyException e) {
