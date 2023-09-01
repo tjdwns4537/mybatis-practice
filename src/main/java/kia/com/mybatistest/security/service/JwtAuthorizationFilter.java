@@ -26,6 +26,11 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
+    /**
+     * 역할
+     * JWT 인가를 처리하는 역할
+     * **/
+
     private final TokenService tokenService;
 
     @Override
@@ -33,7 +38,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         // 1. 토큰이 필요하지 않은 API URL에 대해서 배열로 구성합니다. ( admin, test )
         List<String> notAuthorizationList = Arrays.asList(
                 "/test/generateToken",
-                "/test/dataByToken"
+                "/test/dataByToken",
+                "/test/showAllRtk"
         );
 
         // 2. 토큰이 필요하지 않은 API URL의 경우 => 로직 처리 없이 다음 필터로 이동

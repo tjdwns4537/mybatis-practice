@@ -15,6 +15,11 @@ import java.util.Optional;
 @Slf4j
 public class UserService implements UserServiceInterface {
 
+    /**
+     * TODO
+     *  - 비밀번호 DB에 넣기 전에 암호화 필요
+     * **/
+
     private final UserMapper userMapper;
 
     @Override
@@ -36,5 +41,10 @@ public class UserService implements UserServiceInterface {
     public Optional<UserDto> findByIdAndPassword(LoginUserDto loginUserDto) {
         log.info("로그인 조회 : {}, {}", loginUserDto.getUserEmail(), loginUserDto.getUserPassword());
         return Optional.ofNullable(userMapper.findByIdAndPassword(loginUserDto));
+    }
+    @Override
+    public boolean passAuthorization(UserDto userDto, String email) {
+        if(userDto.getUserEmail().equals(email)) return true;
+        return false;
     }
 }
