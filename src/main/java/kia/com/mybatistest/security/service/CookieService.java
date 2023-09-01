@@ -12,7 +12,7 @@ public class CookieService {
         String encoder = ConvertUtils.encoder("Bearer "+ rtk);
         Cookie rtkCookie = new Cookie(AuthConstants.RTK_COOKIE, encoder);
         rtkCookie.setPath("/");
-        rtkCookie.setMaxAge(60 * 60 *24 * 2);
+        rtkCookie.setMaxAge(60 * 60 * 24 * 2); //2일
         rtkCookie.setHttpOnly(true);
         return rtkCookie;
     }

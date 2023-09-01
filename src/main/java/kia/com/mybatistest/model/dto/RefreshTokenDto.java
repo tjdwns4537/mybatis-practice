@@ -10,6 +10,14 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RefreshTokenDto {
-    private Long tokenId;
-    private String tokenValue;
+    private Long rtkId;
+    private String rtkValue;
+
+    private RefreshTokenDto(String rtkValue) {
+        this.rtkValue = rtkValue;
+    }
+
+    public static RefreshTokenDto of(String rtkValue) {
+        return new RefreshTokenDto(rtkValue);
+    }
 }

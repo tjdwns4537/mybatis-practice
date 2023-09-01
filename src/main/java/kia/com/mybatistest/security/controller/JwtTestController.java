@@ -5,9 +5,11 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kia.com.mybatistest.model.dto.LoginUserDto;
+import kia.com.mybatistest.model.dto.RefreshTokenDto;
 import kia.com.mybatistest.response.TokenResponse;
 import kia.com.mybatistest.response.TokenResponseCode;
 import kia.com.mybatistest.security.service.CookieService;
+import kia.com.mybatistest.security.service.RefreshTokenService;
 import kia.com.mybatistest.security.service.TokenService;
 import kia.com.mybatistest.util.AuthConstants;
 import kia.com.mybatistest.util.ConvertUtils;
@@ -18,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -27,6 +30,7 @@ public class JwtTestController {
 
     private final TokenService tokenService;
     private final CookieService cookieService;
+    private final RefreshTokenService refreshTokenService;
 
     @PostMapping("/generateToken")
     public ResponseEntity<TokenResponse> generateToken(HttpServletResponse httpServletResponse, @RequestBody LoginUserDto loginUserDto) {
@@ -34,10 +38,9 @@ public class JwtTestController {
             String atk = tokenService.generateJwtAccessToken(loginUserDto);
             String rtk = tokenService.generateJwtRefreshToken(loginUserDto);
 
-            loginUserDto.setRefreshToken(rtk);
-
             log.info("토큰 발급:\nATK {}\nRTK {}", atk, rtk);
 
+            refreshTokenService.rtkSave(RefreshTokenDto.of(rtk));
             Cookie rtkCookie = cookieService.generateCookie(rtk); // cookie 설정
             httpServletResponse.addCookie(rtkCookie);
 
@@ -67,8 +70,21 @@ public class JwtTestController {
         }
     }
 
+    @GetMapping("/showAllRtk")
+    public ResponseEntity<TokenResponse> showAllToken() {
+        List<RefreshTokenDto> allTokenList = refreshTokenService.getAllTokenList();
+
+        TokenResponse tokenResponse = TokenResponse.builder()
+                .code(TokenResponseCode.OK.getCode())
+                .status(TokenResponseCode.OK.getHttpStatus())
+                .message(TokenResponseCode.OK.getMessage())
+                .data(allTokenList).build();
+
+        return new ResponseEntity<>(tokenResponse, HttpStatus.OK);
+    }
+
     @GetMapping("/dataByToken")
-    public ResponseEntity<TokenResponse> showTokenData(HttpServletRequest req) {
+    public ResponseEntity<TokenResponse> showDataByToken(HttpServletRequest req) {
         String token = Arrays.stream(req.getCookies())
                 .filter(c -> c.getName().equals(AuthConstants.RTK_COOKIE))
                 .findFirst().map(Cookie::getValue)
