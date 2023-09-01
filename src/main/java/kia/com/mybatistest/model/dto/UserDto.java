@@ -1,19 +1,16 @@
 package kia.com.mybatistest.model.dto;
 
 import io.swagger.annotations.ApiParam;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class JoinUserDto {
+@AllArgsConstructor
+public class UserDto {
 
     @ApiParam(value = "사용자 키 값")
     private Long userId;
@@ -35,11 +32,6 @@ public class JoinUserDto {
     @ApiParam(value = "수정 날짜")
     private String modifyAt;
 
-    public JoinUserDto(String userName, String userEmail, String userPassword, String createAt, String modifyAt) {
-        this.userName = userName;
-        this.userEmail = userEmail;
-        this.userPassword = userPassword;
-        this.createAt = createAt;
-        this.modifyAt = modifyAt;
-    }
+    @ApiParam(value = "리프레쉬 토큰 id값")
+    private Long refreshTokenId;
 }

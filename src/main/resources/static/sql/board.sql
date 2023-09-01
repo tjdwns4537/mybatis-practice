@@ -1,4 +1,4 @@
-CREATE TABLE boards(
+ CREATE TABLE boards(
                        board_id INT NOT NULL AUTO_INCREMENT,
                        board_title VARCHAR(256),
                        board_content LONGTEXT,

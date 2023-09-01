@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import kia.com.mybatistest.response.UserResponse;
 import kia.com.mybatistest.response.UserResponseCode;
 import kia.com.mybatistest.user.service.UserService;
-import kia.com.mybatistest.model.dto.JoinUserDto;
+import kia.com.mybatistest.model.dto.UserDto;
 import kia.com.mybatistest.model.dto.LoginUserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +30,7 @@ public class UserController {
     public ResponseEntity<UserResponse> findId(
             @PathVariable Long id
     ) {
-        JoinUserDto result = userService.findById(id);
+        UserDto result = userService.findById(id);
 
         UserResponse userResponse = UserResponse.builder()
                 .code(UserResponseCode.OK.getCode())
@@ -46,9 +46,9 @@ public class UserController {
     @ApiOperation(value = "Save User")
     @PostMapping("/registration")
     public ResponseEntity<UserResponse> saveUserData(
-        @RequestBody JoinUserDto joinUserDto
+        @RequestBody UserDto userDto
     ) {
-        JoinUserDto result = userService.saveUser(joinUserDto);
+        UserDto result = userService.saveUser(userDto);
 
         UserResponse userResponse = UserResponse.builder()
                 .code(UserResponseCode.OK.getCode())
@@ -63,7 +63,7 @@ public class UserController {
     @Operation(summary = "회원 정보 전체 조회", description = "회원 정보 전체 리스트", tags = {"UserController"})
     @ApiOperation(value = "Find All User")
     @GetMapping("/total")
-    public List<JoinUserDto> getAllDataList() {
+    public List<UserDto> getAllDataList() {
         return userService.getAllUserDataList();
     }
 
@@ -76,7 +76,7 @@ public class UserController {
 
         log.info("입력된 데이터 : {}, {}",loginUserDto.getUserEmail(), loginUserDto.getUserPassword());
 
-        Optional<JoinUserDto> user = userService.findByIdAndPassword(loginUserDto);
+        Optional<UserDto> user = userService.findByIdAndPassword(loginUserDto);
 
         if(user.isPresent()){
             log.info("출력 데이터 : {}, {}", user.get().getUserEmail(), user.get().getUserPassword());

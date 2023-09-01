@@ -2,9 +2,8 @@ package kia.com.mybatistest.security.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kia.com.mybatistest.model.dto.LoginUserDto;
-import kia.com.mybatistest.security.TokenUtils;
+import kia.com.mybatistest.security.service.TokenService;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,7 @@ class JwtTestControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private TokenUtils tokenUtils;
+    private TokenService tokenService;
 
     @DisplayName("[JWT] 토큰 생성 테스트")
     @Test

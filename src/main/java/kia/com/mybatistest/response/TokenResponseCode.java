@@ -8,7 +8,8 @@ import org.springframework.http.HttpStatus;
 public enum TokenResponseCode {
     OK(200, HttpStatus.OK, "정상", new LoginUserDto()),
     NOT_FOUND(404, HttpStatus.NOT_FOUND, "존재하지 않는 URL", new LoginUserDto()),
-    INTERNAL_SERVER_ERROR(500, HttpStatus.INTERNAL_SERVER_ERROR, "서버에서 키 생성에 문제 생김", new LoginUserDto())
+    INTERNAL_SERVER_ERROR(500, HttpStatus.INTERNAL_SERVER_ERROR, "서버에서 키 생성에 문제 생김", new LoginUserDto()),
+    UNAUTHORIZED(401, HttpStatus.UNAUTHORIZED, "권한이 없음", new LoginUserDto())
     ;
 
     private int code;

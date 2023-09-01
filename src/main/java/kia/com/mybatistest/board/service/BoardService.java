@@ -3,8 +3,6 @@ package kia.com.mybatistest.board.service;
 import kia.com.mybatistest.model.dao.BoardMapper;
 import kia.com.mybatistest.model.dto.BoardDto;
 import kia.com.mybatistest.model.dto.BoardUserDto;
-import kia.com.mybatistest.model.dto.JoinUserDto;
-import kia.com.mybatistest.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

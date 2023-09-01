@@ -1,7 +1,6 @@
-package kia.com.mybatistest.security;
+package kia.com.mybatistest.security.service;
 
 import io.jsonwebtoken.*;
-import jakarta.servlet.http.Cookie;
 import kia.com.mybatistest.model.dto.LoginUserDto;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,7 +20,7 @@ import java.util.*;
  */
 @Log4j2
 @Component
-public class TokenUtils {
+public class TokenService {
 
     private String jwtSecretKey;
 
@@ -54,7 +53,7 @@ public class TokenUtils {
                 .setClaims(createClaims(userDto))                       // Payload - Claims 구성
                 .setSubject(String.valueOf(userDto.getUserEmail()))        // Payload - Subject 구성
                 .signWith(SignatureAlgorithm.HS256, createSignature())  // Signature 구성
-                .setExpiration(createATKExpiredDate());                    // Expired Date 구성
+                .setExpiration(createRTKExpiredDate());                    // Expired Date 구성
         return builder.compact();
     }
 
@@ -99,14 +98,10 @@ public class TokenUtils {
         }
     }
 
-    /**
-     * Header 내에 토큰을 추출합니다.
-     *
-     * @param header 헤더
-     * @return String
-     */
-    public String getTokenFromHeader(String header) {
-        return header.split(" ")[1];
+    public String getTokenData(String bToken) {
+        log.info("token:{}",bToken);
+        log.info("split str: {}",bToken.substring(7));
+        return bToken.substring(7);
     }
 
     /**
@@ -115,16 +110,14 @@ public class TokenUtils {
      * @return Calendar
      */
     private Date createATKExpiredDate() {
-        // 토큰 만료시간은 30일으로 설정
         Calendar c = Calendar.getInstance();
         c.add(Calendar.HOUR, 8);     // 8시간
         return c.getTime();
     }
 
     private Date createRTKExpiredDate() {
-        // 토큰 만료시간은 30일으로 설정
         Calendar c = Calendar.getInstance();
-         c.add(Calendar.DATE, 14);         // 1일
+         c.add(Calendar.DATE, 14);         // 14일
         return c.getTime();
     }
 
@@ -180,7 +173,6 @@ public class TokenUtils {
      * @return Claims : Claims
      */
     private Claims getClaimsFormToken(String token) {
-        token = token.split(" ")[1];
         return Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(jwtSecretKey))
                 .parseClaimsJws(token).getBody();
     }

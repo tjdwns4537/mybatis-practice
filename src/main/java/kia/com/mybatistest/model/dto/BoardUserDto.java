@@ -11,6 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class BoardUserDto {
     private BoardDto board;
-    private JoinUserDto user;
+    private UserDto user;
 
 }

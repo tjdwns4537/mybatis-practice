@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kia.com.mybatistest.model.dao.RefreshTokenMapper">
+
+    <resultMap id="rtkDto" type="kia.com.mybatistest.model.dto.RefreshTokenDto">
+        <result property="rtkId" column="rtk_id"/>
+        <result property="rtkValue" column="rtk_value"/>
+    </resultMap>
+
+    <select id="getAllTokenList" resultMap="rtkDto">
+        SELECT * FROM rtks;
+    </select>
+
+    <select id="findById" resultMap="rtkDto">
+        SELECT * FROM rtks WHERE rtk_id = #{rtkId};
+    </select>
+
+    <select id="rtkSave" resultMap="rtkDto">
+        INSERT INTO rtks(rtk_value)
+        VALUES (#{rtkValue});
+    </select>
+</mapper>
