@@ -30,7 +30,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
         // 1. 토큰이 필요하지 않은 API URL에 대해서 배열로 구성합니다. ( admin, test )
         List<String> notAuthorizationList = Arrays.asList(
                 "/test/generateToken",
@@ -49,42 +48,23 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             return;
         }
 
-        String atk = Arrays.stream(request.getCookies())
-                .filter(c -> c.getName().equals(AuthConstants.AUTH_COOKIE))
+        // 쿠키에서 RTK 조회
+        String token = Arrays.stream(request.getCookies())
+                .filter(c -> c.getName().equals(AuthConstants.RTK_COOKIE))
                 .findFirst().map(Cookie::getValue)
                 .orElse(null);
 
-        String header = request.getHeader(AuthConstants.AUTH_HEADER); // Authorization Bearer ~~
-        log.debug("header check: {}",header);
+        log.info("Cookie RTK : {}", token);
 
         try {
-            if (header != null && !header.equalsIgnoreCase("")) { // header 내에 토큰이 존재하는 경우
-
-                String token = tokenService.getTokenFromHeader(header); // 토큰 기반 사용자 아이디 반환 받는 메소드
-
-                // [STEP3] 추출한 토큰이 유효한지 여부를 체크합니다.
-                if (tokenService.isValidToken(token)) {
-
-                    // [STEP4] 토큰을 기반으로 사용자 아이디를 반환 받는 메서드
-                    String userEmail = tokenService.getUserEmailFromToken(token);
-                    logger.debug("[+] user-email check: " + userEmail);
-
-                    // [STEP5] 사용자 아이디가 존재하는지 여부 체크
-                    if (userEmail != null && !userEmail.equalsIgnoreCase("")) {
-                        filterChain.doFilter(request, response);
-                    } else {
-
-                        /** TODO: exception class 생성 필요 **/
-
-//                        throw new BusinessExceptionHandler("TOKEN isn't userId", ErrorCode.BUSINESS_EXCEPTION_ERROR);
-                    }
-                    // 토큰이 유효하지 않은 경우
-                } else {
-
-                    /** TODO: exception class 생성 필요 **/
-
-//                    throw new BusinessExceptionHandler("TOKEN is invalid", ErrorCode.BUSINESS_EXCEPTION_ERROR);
+            if (token != null && token.startsWith("Bearer")) { // header 내에 토큰이 존재하는 경우
+                String tokenData = tokenService.getTokenData(token);
+                if (tokenService.isValidToken(tokenData)) {
+                    String userEmailFromToken = tokenService.getUserEmailFromToken(tokenData);
+                    log.info("userEmailToken: {}", userEmailFromToken);
                 }
+            } else {
+
             }
         } catch (Exception e) {
 

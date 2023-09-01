@@ -9,11 +9,15 @@ import kia.com.mybatistest.response.TokenResponse;
 import kia.com.mybatistest.response.TokenResponseCode;
 import kia.com.mybatistest.security.service.CookieService;
 import kia.com.mybatistest.security.service.TokenService;
+import kia.com.mybatistest.util.AuthConstants;
+import kia.com.mybatistest.util.ConvertUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
 
 @Slf4j
 @RestController
@@ -28,12 +32,14 @@ public class JwtTestController {
     public ResponseEntity<TokenResponse> generateToken(HttpServletResponse httpServletResponse, @RequestBody LoginUserDto loginUserDto) {
         try {
             String atk = tokenService.generateJwtAccessToken(loginUserDto);
-            String rtk = tokenService.generateJwtAccessToken(loginUserDto);
+            String rtk = tokenService.generateJwtRefreshToken(loginUserDto);
 
-            log.info("토큰 발급: ATK {}, RTK {}", atk, rtk);
+            loginUserDto.setRefreshToken(rtk);
 
-            Cookie cookie = cookieService.generateCookie(atk); // cookie 설정
-            httpServletResponse.addCookie(cookie);
+            log.info("토큰 발급:\nATK {}\nRTK {}", atk, rtk);
+
+            Cookie rtkCookie = cookieService.generateCookie(rtk); // cookie 설정
+            httpServletResponse.addCookie(rtkCookie);
 
             if (atk.isEmpty()) {
                 TokenResponse tokenResponse = TokenResponse.builder()
@@ -63,8 +69,16 @@ public class JwtTestController {
 
     @GetMapping("/dataByToken")
     public ResponseEntity<TokenResponse> showTokenData(HttpServletRequest req) {
-        String authorization = req.getHeader("Authorization");
-        String userEmail = tokenService.getUserEmailFromToken(authorization);
+        String token = Arrays.stream(req.getCookies())
+                .filter(c -> c.getName().equals(AuthConstants.RTK_COOKIE))
+                .findFirst().map(Cookie::getValue)
+                .orElse(null);
+
+        String rtk = ConvertUtils.decoder(token);
+
+        log.info("show token : {}", rtk);
+        String tokenData = tokenService.getTokenData(rtk);
+        String userEmail = tokenService.getUserEmailFromToken(tokenData);
 
         TokenResponse tokenResponse = TokenResponse.builder()
                 .code(TokenResponseCode.OK.getCode())
