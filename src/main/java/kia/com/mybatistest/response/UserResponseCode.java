@@ -1,13 +1,13 @@
 package kia.com.mybatistest.response;
 
-import kia.com.mybatistest.model.dto.JoinUserDto;
+import kia.com.mybatistest.model.dto.UserDto;
 import org.springframework.http.HttpStatus;
 
 public enum UserResponseCode {
 
-    OK(200, HttpStatus.OK, "ok",new JoinUserDto()),
-    DataIntegrityViolationException(400, HttpStatus.BAD_REQUEST,"필수 입력 데이터를 다 입력해야 합니다.",new JoinUserDto()),
-    LoginFail(400, HttpStatus.BAD_REQUEST,"로그인이 잘못되었습니다.",new JoinUserDto());
+    OK(200, HttpStatus.OK, "ok",new UserDto()),
+    DataIntegrityViolationException(400, HttpStatus.BAD_REQUEST,"필수 입력 데이터를 다 입력해야 합니다.",new UserDto()),
+    LoginFail(400, HttpStatus.BAD_REQUEST,"로그인이 잘못되었습니다.",new UserDto());
     private int code;
     private HttpStatus httpStatus;
     private String message;

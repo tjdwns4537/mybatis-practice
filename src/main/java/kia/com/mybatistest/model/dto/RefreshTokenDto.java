@@ -7,10 +7,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class BoardUserDto {
-    private BoardDto board;
-    private UserDto user;
-
+@NoArgsConstructor
+public class RefreshTokenDto {
+    private Long tokenId;
+    private String tokenValue;
 }

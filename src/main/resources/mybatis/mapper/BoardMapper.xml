@@ -12,7 +12,7 @@
     </resultMap>
 
     <!-- JoinUserDto를 위한 resultMap도 선언 -->
-    <resultMap id="userResultMap" type="kia.com.mybatistest.model.dto.JoinUserDto">
+    <resultMap id="userResultMap" type="kia.com.mybatistest.model.dto.UserDto">
         <result property="userId" column="user_id"/>
         <result property="userName" column="user_name"/>
         <result property="userEmail" column="user_email"/>
@@ -23,7 +23,7 @@
 
     <resultMap id="boardUserResultMap" type="kia.com.mybatistest.model.dto.BoardUserDto">
         <association property="board" column="boardId" javaType="kia.com.mybatistest.model.dto.BoardDto" resultMap="boardResultMap"/>
-        <association property="user" column="userId" javaType="kia.com.mybatistest.model.dto.JoinUserDto" resultMap="userResultMap"/>
+        <association property="user" column="userId" javaType="kia.com.mybatistest.model.dto.UserDto" resultMap="userResultMap"/>
     </resultMap>
 
     <select id="findByBoardUserAll" resultMap="boardUserResultMap">
