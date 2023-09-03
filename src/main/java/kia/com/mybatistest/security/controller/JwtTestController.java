@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -37,9 +38,12 @@ public class JwtTestController {
 
     @PostMapping("/generateToken")
     public ResponseEntity<TokenResponse> generateToken(HttpServletResponse httpServletResponse, @RequestBody LoginUserDto loginUserDto) {
+
+        Optional<UserDto> user = userService.findByIdAndPassword(loginUserDto);
+
         try {
-            String atk = tokenService.generateJwtAccessToken(loginUserDto);
-            String rtk = tokenService.generateJwtRefreshToken(loginUserDto);
+            String atk = tokenService.generateJwtAccessToken(user.get());
+            String rtk = tokenService.generateJwtRefreshToken(user.get());
 
             log.info("토큰 발급:\nATK {}\nRTK {}", atk, rtk);
 

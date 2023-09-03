@@ -39,7 +39,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         List<String> notAuthorizationList = Arrays.asList(
                 "/test/generateToken",
                 "/test/dataByToken",
-                "/test/showAllRtk"
+                "/test/showAllRtk",
+                "/user/registration"
         );
 
         // 2. 토큰이 필요하지 않은 API URL의 경우 => 로직 처리 없이 다음 필터로 이동

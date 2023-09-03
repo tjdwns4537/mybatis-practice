@@ -33,5 +33,5 @@ public class UserDto {
     private String modifyAt;
 
     @ApiParam(value = "리프레쉬 토큰 id값")
-    private Long refreshTokenId;
+    private Long rtkId;
 }

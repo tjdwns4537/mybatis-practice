@@ -2,7 +2,9 @@ package kia.com.mybatistest.security.service;
 
 import io.jsonwebtoken.*;
 import kia.com.mybatistest.model.dto.LoginUserDto;
+import kia.com.mybatistest.model.dto.UserDto;
 import lombok.extern.log4j.Log4j2;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -35,7 +37,7 @@ public class TokenService {
      * @param userDto LoginUserDto : 사용자 정보
      * @return String : 토큰
      */
-    public String generateJwtAccessToken(LoginUserDto userDto) {
+    public String generateJwtAccessToken(UserDto userDto) {
         // 사용자 시퀀스를 기준으로 JWT 토큰을 발급하여 반환해줍니다.
         JwtBuilder builder = Jwts.builder()
                 .setHeader(createHeader())                              // Header 구성
@@ -46,7 +48,7 @@ public class TokenService {
         return builder.compact();
     }
 
-    public String generateJwtRefreshToken(LoginUserDto userDto) {
+    public String generateJwtRefreshToken(UserDto userDto) {
         // 사용자 시퀀스를 기준으로 JWT 토큰을 발급하여 반환해줍니다.
         JwtBuilder builder = Jwts.builder()
                 .setHeader(createHeader())                              // Header 구성
@@ -141,7 +143,7 @@ public class TokenService {
      * @param userDto 사용자 정보
      * @return Map<String, Object>
      */
-    private Map<String, Object> createClaims(LoginUserDto userDto) {
+    private Map<String, Object> createClaims(UserDto userDto) {
         // 공개 클레임에 사용자의 이름과 이메일을 설정하여 정보를 조회할 수 있다.
         Map<String, Object> claims = new HashMap<>();
 

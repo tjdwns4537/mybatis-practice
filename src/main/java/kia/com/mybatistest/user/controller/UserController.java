@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import kia.com.mybatistest.response.UserResponse;
 import kia.com.mybatistest.response.UserResponseCode;
+import kia.com.mybatistest.security.service.LoginService;
 import kia.com.mybatistest.user.service.UserService;
 import kia.com.mybatistest.model.dto.UserDto;
 import kia.com.mybatistest.model.dto.LoginUserDto;
@@ -23,6 +24,7 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
+    private final LoginService loginService;
 
     @Operation(summary = "회원 키ID 조회", description = "Id정보를 통한 회원 정보 조회", tags = {"UserController"})
     @ApiOperation(value = "Get User by userId")
@@ -81,10 +83,17 @@ public class UserController {
         if(user.isPresent()){
             log.info("출력 데이터 : {}, {}", user.get().getUserEmail(), user.get().getUserPassword());
 
+            UserDto loginUser = loginService.login(user.get());
+
             UserResponse userResponse = UserResponse.builder()
                     .code(UserResponseCode.OK.getCode())
                     .httpStatus(UserResponseCode.OK.getHttpStatus())
-                    .message(UserResponseCode.OK.getMessage()).build();
+                    .message(UserResponseCode.OK.getMessage())
+                    .data(loginUser).build();
+
+            /** TODO
+             * - 로그인 기능 구현했으므로 테스트 필요
+             * **/
 
             return new ResponseEntity<>(userResponse, HttpStatus.OK);
         } else{
