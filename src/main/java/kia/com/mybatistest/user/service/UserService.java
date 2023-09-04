@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,10 +24,11 @@ public class UserService implements UserServiceInterface {
     private final UserMapper userMapper;
 
     @Override
-    public UserDto saveUser(UserDto userDto) {
-        Long l = userMapper.saveUser(userDto);
-        Optional<UserDto> user = findById(l);
-        return user.get();
+    public Optional<UserDto> saveUser(UserDto userDto) {
+        userMapper.saveUser(userDto); // 데이터베이스에 저장하고 생성된 기본 키 값을 userDto에 설정해줄 것입니다.
+
+        // userDto에는 이제 새로운 기본 키 값이 설정되어 있을 것입니다.
+        return Optional.of(userDto);
     }
 
     @Override

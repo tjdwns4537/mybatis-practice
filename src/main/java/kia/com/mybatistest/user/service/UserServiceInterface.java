@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserServiceInterface {
-    UserDto saveUser(UserDto userDto);
+    Optional<UserDto> saveUser(UserDto userDto);
     List<UserDto> getAllUserDataList();
     Optional<UserDto> findById(Long id);
     Optional<UserDto> findByIdAndPassword(LoginUserDto loginUserDto);

@@ -64,7 +64,7 @@ public class UserController {
     public ResponseEntity<UserResponse> saveUserData(
         @RequestBody UserDto userDto
     ) {
-        UserDto res = userService.saveUser(userDto);
+        UserDto res = userService.saveUser(userDto).get();
 
         UserResponse userResponse = UserResponse.builder()
                 .code(UserResponseCode.OK.getCode())
