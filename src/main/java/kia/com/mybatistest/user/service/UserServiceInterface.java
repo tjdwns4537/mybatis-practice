@@ -10,7 +10,9 @@ import java.util.Optional;
 public interface UserServiceInterface {
     UserDto saveUser(UserDto userDto);
     List<UserDto> getAllUserDataList();
-    UserDto findById(Long id);
+    Optional<UserDto> findById(Long id);
     Optional<UserDto> findByIdAndPassword(LoginUserDto loginUserDto);
     boolean passAuthorization(UserDto userDto, String email);
+
+    LoginUserDto login(LoginUserDto loginUserDto);
 }

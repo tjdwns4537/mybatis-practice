@@ -37,26 +37,26 @@ public class TokenService {
      * @param userDto LoginUserDto : 사용자 정보
      * @return String : 토큰
      */
-    public String generateJwtAccessToken(UserDto userDto) {
-        // 사용자 시퀀스를 기준으로 JWT 토큰을 발급하여 반환해줍니다.
-        JwtBuilder builder = Jwts.builder()
-                .setHeader(createHeader())                              // Header 구성
-                .setClaims(createClaims(userDto))                       // Payload - Claims 구성
-                .setSubject(String.valueOf(userDto.getUserEmail()))        // Payload - Subject 구성
-                .signWith(SignatureAlgorithm.HS256, createSignature())  // Signature 구성
-                .setExpiration(createATKExpiredDate());                    // Expired Date 구성
-        return builder.compact();
-    }
+    public String generateJwtToken(UserDto userDto, int check) {
+        if (check == 1) { // atk
+            // 사용자 시퀀스를 기준으로 JWT 토큰을 발급하여 반환해줍니다.
+            JwtBuilder builder = Jwts.builder()
+                    .setHeader(createHeader())                              // Header 구성
+                    .setClaims(createClaims(userDto))                       // Payload - Claims 구성
+                    .setSubject(String.valueOf(userDto.getUserEmail()))        // Payload - Subject 구성
+                    .signWith(SignatureAlgorithm.HS256, createSignature())  // Signature 구성
+                    .setExpiration(createATKExpiredDate());                    // Expired Date 구성
+            return builder.compact();
+        } else { //rtk
+            JwtBuilder builder = Jwts.builder()
+                    .setHeader(createHeader())                              // Header 구성
+                    .setClaims(createClaims(userDto))                       // Payload - Claims 구성
+                    .setSubject(String.valueOf(userDto.getUserEmail()))        // Payload - Subject 구성
+                    .signWith(SignatureAlgorithm.HS256, createSignature())  // Signature 구성
+                    .setExpiration(createRTKExpiredDate());                    // Expired Date 구성
+            return builder.compact();
+        }
 
-    public String generateJwtRefreshToken(UserDto userDto) {
-        // 사용자 시퀀스를 기준으로 JWT 토큰을 발급하여 반환해줍니다.
-        JwtBuilder builder = Jwts.builder()
-                .setHeader(createHeader())                              // Header 구성
-                .setClaims(createClaims(userDto))                       // Payload - Claims 구성
-                .setSubject(String.valueOf(userDto.getUserEmail()))        // Payload - Subject 구성
-                .signWith(SignatureAlgorithm.HS256, createSignature())  // Signature 구성
-                .setExpiration(createRTKExpiredDate());                    // Expired Date 구성
-        return builder.compact();
     }
 
     /**

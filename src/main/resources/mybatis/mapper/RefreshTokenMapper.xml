@@ -2,13 +2,27 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kia.com.mybatistest.model.dao.RefreshTokenMapper">
 
+    <resultMap id="UserDto" type="kia.com.mybatistest.model.dto.UserDto">
+        <result property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="userEmail" column="user_email"/>
+        <result property="userPassword" column="user_password"/>
+        <result property="createAt" column="create_at"/>
+        <result property="modifyAt" column="modify_at"/>
+    </resultMap>
+
     <resultMap id="rtkDto" type="kia.com.mybatistest.model.dto.RefreshTokenDto">
         <result property="rtkId" column="rtk_id"/>
         <result property="rtkValue" column="rtk_value"/>
+        <association property="user" column="userId" javaType="kia.com.mybatistest.model.dto.UserDto" resultMap="UserDto"/>
     </resultMap>
 
     <select id="getAllTokenList" resultMap="rtkDto">
-        SELECT * FROM rtks;
+        SELECT r.rkt_id, r.rtk_value,
+               u.user_id, u.user_name, u.user_email, u.user_password, u.create_at AS userCreateAt, u.modify_at AS userModifyAt
+        FROM rtks r
+            JOIN users u
+                ON r.user_id = u.user_id
     </select>
 
     <select id="findById" resultMap="rtkDto">
@@ -16,7 +30,7 @@
     </select>
 
     <select id="rtkSave" resultMap="rtkDto">
-        INSERT INTO rtks(rtk_value)
-        VALUES (#{rtkValue});
+        INSERT INTO rtks(rtk_value, user_id)
+        VALUES (#{rtkValue}, #{userId});
     </select>
 </mapper>

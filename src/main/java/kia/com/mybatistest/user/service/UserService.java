@@ -24,7 +24,9 @@ public class UserService implements UserServiceInterface {
 
     @Override
     public UserDto saveUser(UserDto userDto) {
-        return userMapper.saveUser(userDto);
+        Long l = userMapper.saveUser(userDto);
+        Optional<UserDto> user = findById(l);
+        return user.get();
     }
 
     @Override
@@ -33,18 +35,23 @@ public class UserService implements UserServiceInterface {
     }
 
     @Override
-    public UserDto findById(Long id) {
+    public Optional<UserDto> findById(Long id) {
         return userMapper.findById(id);
     }
 
     @Override
     public Optional<UserDto> findByIdAndPassword(LoginUserDto loginUserDto) {
-        log.info("로그인 조회 : {}, {}", loginUserDto.getUserEmail(), loginUserDto.getUserPassword());
         return Optional.ofNullable(userMapper.findByIdAndPassword(loginUserDto));
     }
     @Override
     public boolean passAuthorization(UserDto userDto, String email) {
         if(userDto.getUserEmail().equals(email)) return true;
         return false;
+    }
+
+    @Override
+    public LoginUserDto login(LoginUserDto loginUserDto) {
+        userMapper.findByIdAndPassword(loginUserDto);
+        return null;
     }
 }

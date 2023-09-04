@@ -19,20 +19,24 @@
         SELECT * FROM users WHERE user_id = #{userId};
     </select>
 
-    <select id="findByIdAndPassword" resultType="kia.com.mybatistest.model.dto.UserDto">
+    <select id="findByIdAndPassword" resultType="UserDto">
         SELECT user_email, user_password
         FROM users
         WHERE user_email=#{userEmail}
           AND user_password=#{userPassword}
     </select>
 
-    <select id="saveUser" resultMap="UserDto">
+    <insert id="saveUser" parameterType="UserDto" useGeneratedKeys="true" keyProperty="userId">
         INSERT INTO users(user_name, user_email, user_password, create_at, modify_at)
         VALUES (#{userName},
                 #{userEmail},
                 #{userPassword},
                 DATE_FORMAT(#{createAt}, '%Y-%m-%d %H:%i:%s'),
                 now()
-                );
-    </select>
+               );
+
+        <selectKey keyProperty="userId" order="AFTER" resultType="UserDto">
+            SELECT LAST_INSERT_ID() AS userId;
+        </selectKey>
+    </insert>
 </mapper>

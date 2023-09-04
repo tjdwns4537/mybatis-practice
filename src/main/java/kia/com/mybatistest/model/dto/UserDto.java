@@ -31,7 +31,4 @@ public class UserDto {
 //    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     @ApiParam(value = "수정 날짜")
     private String modifyAt;
-
-    @ApiParam(value = "리프레쉬 토큰 id값")
-    private Long rtkId;
 }

@@ -7,7 +7,9 @@ public enum UserResponseCode {
 
     OK(200, HttpStatus.OK, "ok",new UserDto()),
     DataIntegrityViolationException(400, HttpStatus.BAD_REQUEST,"필수 입력 데이터를 다 입력해야 합니다.",new UserDto()),
-    LoginFail(400, HttpStatus.BAD_REQUEST,"로그인이 잘못되었습니다.",new UserDto());
+    LoginFail(400, HttpStatus.BAD_REQUEST,"로그인이 잘못되었습니다.",new UserDto()),
+
+    NotFound(401, HttpStatus.NOT_FOUND, "입력된 정보를 찾지 못했습니다.", new UserDto());
     private int code;
     private HttpStatus httpStatus;
     private String message;

@@ -42,8 +42,8 @@ public class JwtTestController {
         Optional<UserDto> user = userService.findByIdAndPassword(loginUserDto);
 
         try {
-            String atk = tokenService.generateJwtAccessToken(user.get());
-            String rtk = tokenService.generateJwtRefreshToken(user.get());
+            String atk = tokenService.generateJwtToken(user.get(), 1); // 1 == atk
+            String rtk = tokenService.generateJwtToken(user.get(), 0); // 0 == rtk
 
             log.info("토큰 발급:\nATK {}\nRTK {}", atk, rtk);
 

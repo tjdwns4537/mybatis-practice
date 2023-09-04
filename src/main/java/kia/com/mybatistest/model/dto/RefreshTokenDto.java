@@ -12,6 +12,7 @@ import lombok.Setter;
 public class RefreshTokenDto {
     private Long rtkId;
     private String rtkValue;
+    private Long userId;
 
     private RefreshTokenDto(String rtkValue) {
         this.rtkValue = rtkValue;

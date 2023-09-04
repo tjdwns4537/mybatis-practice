@@ -2,6 +2,8 @@ package kia.com.mybatistest.user.controller;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
+import kia.com.mybatistest.response.TokenResponse;
+import kia.com.mybatistest.response.TokenResponseCode;
 import kia.com.mybatistest.response.UserResponse;
 import kia.com.mybatistest.response.UserResponseCode;
 import kia.com.mybatistest.security.service.LoginService;
@@ -32,16 +34,28 @@ public class UserController {
     public ResponseEntity<UserResponse> findId(
             @PathVariable Long id
     ) {
-        UserDto result = userService.findById(id);
+        Optional<UserDto> result = userService.findById(id);
 
-        UserResponse userResponse = UserResponse.builder()
-                .code(UserResponseCode.OK.getCode())
-                .message(UserResponseCode.OK.getMessage())
-                .httpStatus(UserResponseCode.OK.getHttpStatus())
-                .data(result)
-                .build();
+        if (result.isPresent()) {
+            UserResponse userResponse = UserResponse.builder()
+                    .code(UserResponseCode.OK.getCode())
+                    .message(UserResponseCode.OK.getMessage())
+                    .httpStatus(UserResponseCode.OK.getHttpStatus())
+                    .data(result)
+                    .build();
 
-        return new ResponseEntity<>(userResponse, HttpStatus.OK);
+            return new ResponseEntity<>(userResponse, HttpStatus.OK);
+        } else {
+            UserResponse userResponse = UserResponse.builder()
+                    .code(UserResponseCode.NotFound.getCode())
+                    .message(UserResponseCode.NotFound.getMessage())
+                    .httpStatus(UserResponseCode.NotFound.getHttpStatus())
+                    .data(null)
+                    .build();
+
+            return new ResponseEntity<>(userResponse, HttpStatus.NOT_FOUND);
+        }
+
     }
 
     @Operation(summary = "회원 객체를 통해 저장",description = "회원 저장", tags = {"UserController"})
@@ -50,13 +64,13 @@ public class UserController {
     public ResponseEntity<UserResponse> saveUserData(
         @RequestBody UserDto userDto
     ) {
-        UserDto result = userService.saveUser(userDto);
+        UserDto res = userService.saveUser(userDto);
 
         UserResponse userResponse = UserResponse.builder()
                 .code(UserResponseCode.OK.getCode())
                 .message(UserResponseCode.OK.getMessage())
                 .httpStatus(UserResponseCode.OK.getHttpStatus())
-                .data(result)
+                .data(res)
                 .build();
 
         return new ResponseEntity<>(userResponse, HttpStatus.OK);
@@ -72,7 +86,7 @@ public class UserController {
     @Operation(summary = "로그인", description = "회원 로그인 성공/실패 여부 확인", tags = {"UserController"})
     @ApiOperation(value = "Login User")
     @GetMapping("/login")
-    public ResponseEntity<UserResponse> loginUser(
+    public ResponseEntity<?> loginUser(
             @RequestBody LoginUserDto loginUserDto
             ) {
 
@@ -83,20 +97,28 @@ public class UserController {
         if(user.isPresent()){
             log.info("출력 데이터 : {}, {}", user.get().getUserEmail(), user.get().getUserPassword());
 
-            UserDto loginUser = loginService.login(user.get());
+            if(loginService.login(user.get())){
+                // 로그인 성공
+                UserResponse userResponse = UserResponse.builder()
+                        .code(UserResponseCode.OK.getCode())
+                        .httpStatus(UserResponseCode.OK.getHttpStatus())
+                        .message(UserResponseCode.OK.getMessage())
+                        .data(user.get()).build();
+                return new ResponseEntity<>(userResponse, HttpStatus.OK);
+            } else {
+                // 토큰 인증 실패
+                TokenResponse tokenResponse = TokenResponse.builder()
+                        .code(TokenResponseCode.UNAUTHORIZED.getCode())
+                        .status(TokenResponseCode.UNAUTHORIZED.getHttpStatus())
+                        .message(TokenResponseCode.UNAUTHORIZED.getMessage())
+                        .data(null)
+                        .build();
 
-            UserResponse userResponse = UserResponse.builder()
-                    .code(UserResponseCode.OK.getCode())
-                    .httpStatus(UserResponseCode.OK.getHttpStatus())
-                    .message(UserResponseCode.OK.getMessage())
-                    .data(loginUser).build();
+                return new ResponseEntity<>(tokenResponse, HttpStatus.UNAUTHORIZED);
+            }
 
-            /** TODO
-             * - 로그인 기능 구현했으므로 테스트 필요
-             * **/
-
-            return new ResponseEntity<>(userResponse, HttpStatus.OK);
         } else{
+            // DB에 데이터 조회 실패
             log.info("출력 데이터 : {}, {}", user.get().getUserId(), user.get().getUserPassword());
             UserResponse userResponse = UserResponse.builder()
                     .code(UserResponseCode.LoginFail.getCode())
